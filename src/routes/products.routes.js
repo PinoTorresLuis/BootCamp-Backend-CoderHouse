@@ -1,8 +1,11 @@
 import { Router } from "express";
+
 import { ProductManager } from "../productManager.js";
 
 const routerProd = Router();
-const productManager = new ProductManager ('src/models/productos.txt');
+
+const productManager = new ProductManager ('src/models/productos.json');
+
 
 routerProd.get ('/', async(req,res)=>{
     const {limit} = req.query;
@@ -22,7 +25,7 @@ routerProd.get ('/:id', async(req,res)=>{
 });
 
 routerProd.post ('/', async(req,res)=>{
-    const confirmacion = await ProductManager.addProducts(req.body);
+    const confirmacion = await productManager.addProduct(req.body);
     if(confirmacion){
         res.status(200).send("Producto creado correctamente");
     }else {
@@ -31,7 +34,7 @@ routerProd.post ('/', async(req,res)=>{
 });
 
 routerProd.delete ('/:id', async(req,res)=>{
-    const confirmacion = await ProductManager.deleteProduct(req.params.id);
+    const confirmacion = await productManager.deleteProducts(req.params.id);
     if(confirmacion){
         res.status(200).send("Producto borrado correctamente");
     }else {
@@ -39,7 +42,7 @@ routerProd.delete ('/:id', async(req,res)=>{
     }
 });
 routerProd.put ('/:id',  async(req,res)=>{
-    const confirmacion = await ProductManager.updateProduct(req.params.id, req.body);
+    const confirmacion = await productManager.updateProducts(req.params.id, req.body);
     if(confirmacion){
         res.status(200).send("Producto actualizado correctamente");
     }else {

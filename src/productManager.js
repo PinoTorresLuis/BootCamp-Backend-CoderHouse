@@ -4,19 +4,27 @@ export class ProductManager{
     constructor(path){  //utilizo el path para que funcione como parámetro en mis métodos así al momento de exportar la clase en app.js y al instanciarla poder pasar la ruta del archivo productos.json 
         this.path = path;
     }
+    static incrementID(){
+      if(this.idIncrement){
+        this.idIncrement ++
+      }else {
+        this.idIncrement = 1
+      }
+      return this.idIncrement
+    }
+    
 	addProduct = async (product) => {
 		const products = JSON.parse (await fs.readFile(this.path,'utf-8'));
-   
 		  //Código para verificar que no se repita el mismo código de producto
 		if (products.some(prod => prod.code === product.code)) {
 		  console.log(`ERROR: Ya existe un producto con el código:${product.code}`)
 		  return
 		  }
   
-		if( !product.title || !product.description || !product.price || !product.thumbnail ||! product.code || product.stock < 0){
+    if( !product.title || !product.description || !product.price || !product.thumbnail ||! product.code || product.stock < 0){
 			console.log("Todos los campos son obligatorios")
 			return
-		  }else{
+		  } else{
 			products.push(product) //Se utiliza push para pasar los datos que se encuentran al array vacio en el archivo .txt
 		  }
   
@@ -65,5 +73,4 @@ export class ProductManager{
       }
 
 }
-
 
