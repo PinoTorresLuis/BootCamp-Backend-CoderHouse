@@ -27,7 +27,7 @@ export class ProductManager{
 		  } else{
 			products.push(product) //Se utiliza push para pasar los datos que se encuentran al array vacio en el archivo .txt
 		  }
-  
+
 		await fs.writeFile(this.path,JSON.stringify(products));
 		 
 		console.log ("Producto agregado correctamente");
@@ -45,7 +45,7 @@ export class ProductManager{
 	   //Método para actualizar los productos en el archivo .txt
 	async updateProducts(id, {title, description, price, thumbnail, code, stock }){
         const products = JSON.parse (await fs.readFile(this.path, 'utf-8'))
-        const index = products.findIndex (prod => prod.id === id)
+        const index = products.findIndex (prod => prod.id === parseInt(id))
 
         if (index !== -1){ 
             const product = products[index]
