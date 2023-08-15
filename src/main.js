@@ -18,13 +18,13 @@ app.use ('/api/product', routerProds);
 app.use('/api/cart/',cartRouter);
 
 
-app.get('/',(req,resp)=>{
-    resp.send("Bienvenido a la página inicial")
+app.get('/',(req,res)=>{
+    res.send("Bienvenido a la página inicial")
 })
 
 
-app.get('/*',(req,resp)=>{   
-    resp.send("Error 404: Page not found");
+app.get('/*',(req,res)=>{   
+    res.send("Error 404: Page not found");
 })
 
 //Server
