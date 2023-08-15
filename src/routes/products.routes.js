@@ -1,20 +1,20 @@
 import { Router } from "express";
 
-import { ProductManager } from "../productManager.js";
+import { ProductManager } from "../controllers/productManager.js";
 
-const routerProd = Router();
+const routerProds = Router();
 
 const productManager = new ProductManager ('src/models/productos.json');
 
 
-routerProd.get ('/', async(req,res)=>{
+routerProds.get ('/', async(req,res)=>{
     const {limit} = req.query;
-    const productos = await productManager.getProducts();
-    const prods = productos.slice(0,limit);
+    const products = await productManager.getProducts();
+    const prods = products.slice(0,limit);
     res.status(200).send(prods);
 });
 
-routerProd.get ('/:id', async(req,res)=>{
+routerProds.get ('/:id', async(req,res)=>{
     const {id} = req.params
     const prods = await productManager.getProductById(parseInt(id));
     if (prods){
@@ -24,24 +24,16 @@ routerProd.get ('/:id', async(req,res)=>{
     }
 });
 
-routerProd.post ('/', async(req,res)=>{
-    const confirmacion = await productManager.addProduct(req.body);
-    if(confirmacion){
+routerProds.post ('/', async(req,res)=>{
+    const newProduct = req.body
+    await productManager.addProduct(newProduct);
+    
+    if(newProduct){
         res.status(200).send("Producto creado correctamente");
-    }else {
-        res.status(404).send("Producto ya existente")
     }
 });
 
-routerProd.delete ('/:id', async(req,res)=>{
-    const confirmacion = await productManager.deleteProducts(req.params.id);
-    if(confirmacion){
-        res.status(200).send("Producto borrado correctamente");
-    }else {
-        res.status(400).send("Producto no encontrado")
-    }
-});
-routerProd.put ('/:id',  async(req,res)=>{
+routerProds.put ('/:id',  async(req,res)=>{
     const confirmacion = await productManager.updateProducts(req.params.id, req.body);
     if(confirmacion){
         res.status(200).send("Producto actualizado correctamente");
@@ -50,4 +42,13 @@ routerProd.put ('/:id',  async(req,res)=>{
     }
 });
 
-export default routerProd;
+routerProds.delete ('/:id', async(req,res)=>{
+    const confirmacion = await productManager.deleteProducts(req.params.id);
+    if(confirmacion){
+        res.status(200).send("Producto borrado correctamente");
+    }else {
+        res.status(400).send("Producto no encontrado")
+    }
+});
+
+export default routerProds;

@@ -1,15 +1,18 @@
 import {promises as fs} from 'fs'
 
-export class CartProducts {
+export class CartManager {
     constructor(path, pathProducts) {
       this.cart = []
       this.path = path
       this.pathProducts = pathProducts
   }
+  
+  //Método para crear carrito
+  newCart = async()=>{
+      this.cart = JSON.parse(await fs.readFile(this.path, 'utf-8'));
 
-  async agregarCarrito() {
-      this.cart = JSON.parse(await fs.readFile(this.path, 'utf-8'))
       const newCart = {}
+      //Misma lógica que en ProductManager.
       if (this.cart.length === 0) {
           newCart.id = 1;
       } else {
@@ -20,7 +23,14 @@ export class CartProducts {
       await fs.writeFile(this.path, JSON.stringify(this.cart))
   }
 
-  async getProductByCart(cid) {
+  //Método para traer todos los productos
+  getProducts = async()=>{
+    this.cart = JSON.parse(await fs.readFile(this.path,'utf-8'));
+    return this.cart
+  }
+
+  //Método para traer el producto por el ID
+  getProductByID = async(cid)=>{
 
       this.cart = JSON.parse(await fs.readFile(this.path, 'utf-8'));
       const findID = this.cart.find(cart => cart.id === parseInt(cid))
@@ -31,17 +41,15 @@ export class CartProducts {
       }
   }
 
-  async addProdCart(cid, pid) {
+  //Método para agregar productos al carrito
+  addProdCart = async(cid, pid)=> {
       const prods = JSON.parse(await fs.readFile(this.pathProducts , 'utf-8'))
       const findProductPID = prods.find(product => product.id === parseInt(pid))
       this.cart = JSON.parse(await fs.readFile(this.path, 'utf-8'))
       const findCartCID = this.cart.find(cart => cart.id === parseInt(cid))
 
-      if (!findProductPID) {
+      if (!findProductPID || !findCartCID) {
           return false
-      } else {
-          if (!findCartCID) {
-              return false
           } else {
               const productExist = findCartCID.products.find(products => products.id === parseInt(pid))
               if (productExist) { //Indico que el producto ya existe
@@ -57,39 +65,6 @@ export class CartProducts {
           }
 
       }
-
-  }
-  }
-    /* 
-
-   getCartByID = async()=>{
-
-   }
-
-   updateCartQuantity = async(id)=>{
-    const products = JSON.parse(await fs.readFile(this.path,'utf-8'))
-    const findIndex = products.findIndex(element => element.id === prod.id);
-    if (findIndex !== -1){
-      const oldCant = products[findIndex].quantity;
-      products[findIndex].quantity = oldCant + element
-    } 
-   }
-   
-   
-    const findID= this.cart.find(producto => producto.id === prod.id)
-
-    if (prods.some(producto=> producto.id === findID)){
-      const index = prods.findIndex(producto =>producto.id === findID);
-      prods[index].cantidad ++
-    } else {
-      prods.push(prod)
-    }
-      prod.id = CartProducts.incrementID()
-     await fs.writeFile(this.path, JSON.stringify(prods))
-     return true
-    }
-   
-   
-   */
+}
 
 

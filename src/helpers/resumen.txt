@@ -1,3 +1,0 @@
-helpers definición: es un criterio del desarrollador. Son ayudas especificacicas:
-es decir un archivo que sea definitorio.
-Por ejemplo: una herramienta especifica para la configuración de los puertos de una aplicación.
