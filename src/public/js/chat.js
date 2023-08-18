@@ -27,4 +27,8 @@ btnChat.addEventListener('click', ()=>{
     }
 })
 
+socket.on("mensajes", arrayMensajes =>{
+    
+})
+
 

@@ -81,4 +81,3 @@ export class ProductManager{
         console.log ("Producto borrado correctamente");    
       }
 }
-
