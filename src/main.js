@@ -25,9 +25,16 @@ app.set('view engine', 'handlebars');//Defino extensión
 app.set('views', path.resolve(__dirname, './views')) //Defino localización
 
 //Conexión de Socket.io
+const mensajes = [];
 io.on("connection", (socket)=>{
     console.log("Conexión con Socket.io");
-
+    /*
+ 
+    socket.on ('mensaje', (info) =>{
+        console.log(info);
+        mensajes.push(info);
+        io.emit ('mensajes', mensajes);
+    })
     socket.on('newProduct',(prod)=>{
         console.log(prod);
         //Debería agregarse al txt mediante addProduct
@@ -58,13 +65,11 @@ app.use('/api/cart/',cartRouter);
 //HBS
 app.get ('/static', (req,res)=>{
 
-    res.render("realTimeProducts",{
-        titulo: "RealTimeProducts",
-        rutaJS: "realTimeProducts.js",
+    res.render("chat",{
+        titulo: "Chat",
+        rutaJS: "chat.js",
         rutaCSS: "style.css"
     })
-
-
 })
 
   /*

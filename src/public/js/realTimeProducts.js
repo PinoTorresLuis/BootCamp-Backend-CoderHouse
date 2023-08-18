@@ -8,4 +8,9 @@ form.addEventListener('submit', (e) => {
     const prod = Object.fromEntries(datForm);
     socket.emit('newProduct',prod);
     console.log(prod)
+    Swal.fire(
+        'Producto creado correctamente!',
+        'success'
+      )
+    form.reset();
 } )
