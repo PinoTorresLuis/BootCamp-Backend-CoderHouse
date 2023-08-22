@@ -43,7 +43,7 @@ app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
 
 //Conexión de Socket.io
 io.on("connection", (socket)=>{
-    console.log("Conexión con Socket.io funcionando");
+    console.log("Conexión con Socket.io OK");
   //Método para traer todos los productos que haya en el archivo.json
     socket.on('load', async()=>{
         const products = await manager.getProducts()
@@ -56,7 +56,7 @@ io.on("connection", (socket)=>{
       io.emit (products);
     })
 
-   //Método para eliminar productos. Aún no puedo hacerlo funcionar
+   //Método para eliminar productos. Todavía no puedo hacerlo funcionar
    socket.on ('load', async(id)=>{
         const products = await manager.deleteProduct(id);
         io.emit( "delete",products)

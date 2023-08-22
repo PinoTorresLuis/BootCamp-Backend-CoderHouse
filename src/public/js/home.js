@@ -23,3 +23,5 @@ socket.on('products', products =>{
     })
 })
 
+//Cree el botón Eliminar pero todavía no funciona
+
