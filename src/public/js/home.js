@@ -1,21 +1,25 @@
 const socket = io();
 
-const div = document.getElementById("container-products");
+const containerProducts = document.getElementById("container-products");
 
 socket.emit('load');
 
 socket.on('products', products =>{
-    div.innerHTML = '';
+    containerProducts.innerHTML = "";
+
     products.forEach(prod =>{
-        div.innerHTML += `
-        <div class="product-container">
+       const div = document.createElement("div");
+       div.classList.add("product");
+       div.innerHTML =`
           <p>Id: ${prod.id}</p>
           <p>Title: ${prod.title}</p>
           <p>Description: ${prod.description}</p>
           <p>Price: ${prod.price}</p>
           <p>Code: ${prod.code}</p>
           <p>Stock: ${prod.stock}</p>
-        </div>
+          <button id="${prod.id}" class="btn-delete">Eliminar</button>
         `;
+      containerProducts.append(div);
     })
 })
+

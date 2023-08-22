@@ -2,6 +2,7 @@ import { Router } from "express";
 
 const routerHandleBars = Router();
 
+//Routes
 routerHandleBars.get ('/realtimeproducts', (req,res)=>{
     res.render("realTimeProducts",{ //Indicar que plantilla voy a utilizar
         titulo: "realTimeProducts",
@@ -11,7 +12,7 @@ routerHandleBars.get ('/realtimeproducts', (req,res)=>{
 })
 
 routerHandleBars.get ('/home', (req,res)=>{
-    res.render("home",{ //Indicar que plantilla voy a utilizar
+    res.render("home",{
         titulo: "home",
         rutaJS: "home.js",
         rutaCSS: "home.css"
