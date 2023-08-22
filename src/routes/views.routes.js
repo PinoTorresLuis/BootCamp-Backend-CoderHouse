@@ -2,20 +2,20 @@ import { Router } from "express";
 
 const routerHandleBars = Router();
 
-routerHandleBars.get ('/static', (req,res)=>{
-    res.render("chat",{
-        titulo: "Chat",
-        rutaJS: "chat.js",
-        rutaCSS: "style.css"
+routerHandleBars.get ('/realtimeproducts', (req,res)=>{
+    res.render("realTimeProducts",{ //Indicar que plantilla voy a utilizar
+        titulo: "realTimeProducts",
+        rutaJS: "realTimeProducts.js",
+        rutaCSS: "form.css"
     })
 })
 
-//Indicar que plantilla voy a utilizar
-/* res.render('realt',{
-    titulo:"realt",
-    usuario: user,
-    isTutor: user.cargo === "Tutor",
-    cursos:cursos
-})  */
+routerHandleBars.get ('/home', (req,res)=>{
+    res.render("home",{ //Indicar que plantilla voy a utilizar
+        titulo: "home",
+        rutaJS: "home.js",
+        rutaCSS: "home.css"
+    })
+})
 
 export default routerHandleBars

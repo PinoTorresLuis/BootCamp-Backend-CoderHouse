@@ -8,9 +8,12 @@ import routerProds from './routes/products.routes.js';
 import cartRouter from './routes/cart.routes.js';
 import routerHandleBars from './routes/views.routes.js';
 
+import { ProductManager } from './controllers/productManager.js';
+
+
 const PORT = 4000;
 const app = express();
-
+const manager = new ProductManager ('src/models/productos.json');
 //Server
 //Se ubica acá arriba porque Socket io necesita saber la configuración de los servidores
 const server = app.listen(PORT,()=>{
@@ -29,43 +32,28 @@ app.set('views', path.resolve(__dirname, './views')) //Defino localización
 app.use('/static', express.static(path.join(__dirname,'/public')));
 app.use ('/api/product', routerProds);
 app.use('/api/cart/',cartRouter);
-app.use('/', routerHandleBars);
+app.use('/static/', routerHandleBars);
 app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
     res.send("Error 404: Page not found");
 })
 
 //Conexión de Socket.io
-const mensajes = [];
 io.on("connection", (socket)=>{
     console.log("Conexión con Socket.io");
-  //Función CHAT
-    socket.on ('mensaje', (info) =>{
-        console.log(info);
-        mensajes.push(info);
-        io.emit ('mensajes', mensajes);
+  //Función CHAT/FORMULARIO
+    socket.on ('newProduct', async(info) =>{
+        const products = await manager.addProduct(info)
+       /*  mensajes.push(info);
+        console.log(mensajes); */
+      io.emit (products);
+    })
+
+    socket.on('load', async()=>{
+        const products = await manager.getProducts()
+        io.emit('products',products);
     })
 })
- /*
-    //Función para Agregar formulario
-    socket.on('newProduct',(prod)=>{
-        console.log(prod);
-        //Debería agregarse al txt mediante addProduct
-    } )
 
 
-  /*   socket.on('mensaje', info =>{
-        console.log(info);
-        socket.emit('respuesta', false);
-    })
-
-    socket.on('juego', (infoJuego)=>{
-        if(infoJuego == 'truco'){
-            console.log("Conexión a Poker exitosa")
-        } else {
-            console.log("Conexión a Truco exitosa")
-        }
-    })
-})
-*/
 
 
