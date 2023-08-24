@@ -17,13 +17,19 @@ routerHandleBars.get('/realtimeproducts', async (req,res)=>{
 })
 
 
-/* routerHandleBars.post('/realtimeproducts', async (req,res)=>{
-    const newProduct = req.body
-    res.render("realTimeProducts",{ 
-        rutaJS: "realTimeProducts.js",
-        products: await products.addProduct(newProduct)
-    })
-}) */
+ routerHandleBars.post('/realtimeproducts', async (req,res)=>{
+    try {
+        const newProduct = req.body;
+        
+        // Agregar el producto utilizando el ProductManager
+        await products.addProduct(newProduct);
+        
+        res.status(201).send({ message: 'Producto creado correctamente' });
+    } catch (error) {
+        console.error('Error al agregar el producto:', error);
+        res.status(500).send({ message: 'Error al crear el producto' });
+    }
+}) 
 
 routerHandleBars.get ('/home', async (req,res)=>{
     res.render("home",{

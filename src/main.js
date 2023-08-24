@@ -44,18 +44,14 @@ app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
 //Conexión de Socket.io
 io.on("connection", (socket)=>{
     console.log("Conexión con Socket.io OK");
-  //Método para traer todos los productos en la plantilla
-    socket.on('load', async()=>{
-        const products = await manager.getProducts()
-        io.emit('products',products);
-    })
     
   //Método para agregar el producto que proviene del Form
     socket.on ('newProduct', async(info) =>{
-        const products = await manager.addProduct(info)
-      io.emit (products);
+        await manager.addProduct(info)
+        const products = await manager.getProducts()
+      socket.emit ('products',products);
     })
-
+  
    //Método para eliminar productos. Todavía no puedo hacerlo funcionar
 /*    socket.on ('load', async (productId)=>{
         const products = await manager.deleteProduct(productId);
@@ -64,17 +60,5 @@ io.on("connection", (socket)=>{
 
 })
 
-/* 
-io.on("connection", (socket)=>{
-  console.log("Conexión con Socket.io OK");
-//Método para traer todos los productos que haya en el archivo.json
-  socket.on('load', async()=>{
-      io.emit('products');
-  })
-  socket.on('load', async()=>{
-      io.emit('newProduct', prods);
-  })
-  
 
-}) */
 
