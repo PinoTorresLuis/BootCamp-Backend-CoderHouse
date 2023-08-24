@@ -1,3 +1,23 @@
-<h1>Productos</h1>
+<h1>Bienvenidos al Home</h1>
 
-<div id="container-products" class="container-products"></div>
+      {{#if products}} 
+       <h2>Nuestros productos</h2>   
+      {{#each products}}
+        <div class="container-products">
+          <div> 
+          <p>Id: {{this.id}}</p>
+          <p>Title: {{this.title}}</p>
+          <p>Description: {{this.description}}</p>
+          <p>Price: {{this.price}}</p>
+          <p>thumbnail: {{this.thumbnail}}</p>
+          <p>Code: {{this.code}}</p>
+          <p>Stock: {{this.stock}}</p>
+          <button id="{{this.id}}" class="btn-delete">Eliminar</button>
+          </div>
+        </div>
+        {{/each}} 
+          {{else}}
+          <h3>No agregaste ningún producto, por favor hacé click en el botón para generar productos</h3>
+          <a><button href="src/views/realTimeProducts.handlebars">Formulario</button></a>
+          {{/if}}
+     

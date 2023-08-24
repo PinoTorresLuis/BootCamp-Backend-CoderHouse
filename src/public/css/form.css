@@ -35,3 +35,34 @@ h1{
     font-size: 1rem;
     padding: 10px;
 }
+  
+.container-products {
+    display: grid;
+    grid-template-columns: repeat(12,1fr);
+    grid-template-rows: auto;
+    margin: 1em;
+    background-color: beige;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-products > .product {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    background-color: cadetblue;
+    margin: 1em;
+    padding: 1em;
+    height: auto;
+    width: auto;
+}
+
+.container-products > .product > .btn-delete {
+    margin-top: 5px;
+    background-color: #ffff;
+    color: red;
+    border: #0000;
+    width: 100%;
+}

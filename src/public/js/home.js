@@ -1,4 +1,4 @@
-const socket = io();
+/* const socket = io();
 
 const containerProducts = document.getElementById("container-products");
 
@@ -22,6 +22,7 @@ socket.on('products', products =>{
       containerProducts.append(div);
     })
 })
-
+ */
 //Cree el botón Eliminar pero todavía no funciona
+
 
