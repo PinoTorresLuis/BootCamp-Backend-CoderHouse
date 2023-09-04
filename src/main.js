@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 
 import path from 'path';
 import {__dirname} from './path.js';
@@ -9,6 +10,8 @@ import { engine } from 'express-handlebars'
 import routerProds from './routes/products.routes.js';
 import cartRouter from './routes/cart.routes.js';
 import routerHandleBars from './routes/views.routes.js';
+import userRouter from './routes/users.routes.js';
+import productRouter from './routes/productsdb.routes.js';
 
 import { ProductManager } from './controllers/productManager.js';
 
@@ -34,12 +37,19 @@ app.set('views', path.resolve(__dirname, './views')) //Defino localización
 
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
-app.use ('/api/products', routerProds);
+//app.use ('/api/products', routerProds);
 app.use('/api/carts/',cartRouter);
 app.use('/static/', routerHandleBars);
+app.use('/api/users', userRouter);
+app.use('/api/products', productRouter)
+
 app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
     res.send("Error 404: Page not found");
 })
+
+mongoose.connect('mongodb+srv://luispino:coderhouse@clustercoder.rrpt8ts.mongodb.net/?retryWrites=true&w=majority')
+.then(()=>console.log("DB conectada"))
+.catch((e)=>console.log("Error en conexión a MONGO DB Atlas", e));
 
 //Conexión de Socket.io
 io.on("connection", (socket)=>{
