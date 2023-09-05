@@ -7,11 +7,17 @@ import {__dirname} from './path.js';
 import { Server } from 'socket.io';
 import { engine } from 'express-handlebars'
 
-import routerProds from './routes/products.routes.js';
-import cartRouter from './routes/cart.routes.js';
+//import routerProds from './routes/products.routes.js';
+//import cartRouter from './routes/cart.routes.js';
+
+//Ruta de HandleBars
 import routerHandleBars from './routes/views.routes.js';
+//Ruta de UsuarioDB
 import userRouter from './routes/users.routes.js';
+//Ruta de ProductsDB
 import productRouter from './routes/productsdb.routes.js';
+//Ruta de CartProducts DB
+import cartRouterDB from './routes/cartdb.routes.js';
 
 import { ProductManager } from './controllers/productManager.js';
 
@@ -38,10 +44,11 @@ app.set('views', path.resolve(__dirname, './views')) //Defino localización
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
 //app.use ('/api/products', routerProds);
-app.use('/api/carts/',cartRouter);
+//app.use('/api/carts/',cartRouter);
 app.use('/static/', routerHandleBars);
 app.use('/api/users', userRouter);
-app.use('/api/products', productRouter)
+app.use('/api/products', productRouter);
+app.use('/api/cart',cartRouterDB);
 
 app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
     res.send("Error 404: Page not found");
