@@ -43,12 +43,13 @@ app.set('views', path.resolve(__dirname, './views')) //Defino localización
 
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
+
 //app.use ('/api/products', routerProds);
 //app.use('/api/carts/',cartRouter);
 app.use('/static/', routerHandleBars);
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
-app.use('/api/cart',cartRouterDB);
+app.use('/api/carts',cartRouterDB);
 
 app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
     res.send("Error 404: Page not found");
