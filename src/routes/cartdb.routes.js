@@ -1,14 +1,13 @@
 import { Router } from "express";
 
 import { cartModel } from "../models/cart.models.js";
-
 import { productModel } from "../models/products.models.js";
 
 const cartRouterDB = Router();
 
-cartRouterDB.get('/:cid', async(req,res)=>{
-    const {cid} = req.params;
-    const prods = await cartModel.findById(cid);
+cartRouterDB.get('/:id', async(req,res)=>{
+    const {id} = req.params;
+    const prods = await cartModel.findOne(id).populate('products.id_prod');
     if (prods){
         res.status(200).send({resultado:"Tu producto en el carrito es:", message:prods})
     }else {
@@ -17,39 +16,39 @@ cartRouterDB.get('/:cid', async(req,res)=>{
 })
 
 cartRouterDB.get('/', async(req,res)=>{
-    const {limit} = req.query;
-    const prods = await cartModel.find().limit(limit);
+    const prods = await cartModel.find();
     res.status(200).send({resultado:"Productos encontrados", message:prods});
 })
 
 cartRouterDB.post('/', async(req,res)=>{
-    await cartModel.create();
-   
+    await cartModel.create({});
     res.status(200).send({resultado:"Producto agregado al carrito correctamente"})
 
 })
 
 
-cartRouterDB.post('/:pid/products/:cid', async(req,res)=>{
-    const {cid,pid} = req.params
-    const {quantity} = req.body
+cartRouterDB.post('/:cid/products/:pid', async(req,res)=>{
+    const {cid,pid} = req.params;
+    const {quantity} = req.body;
+
     try {
-     const checkIDProduct = await productModel.findById(pid);
-     if(!checkIDProduct){
+     const productID = await productModel.findById(pid);
+     if(!productID){
         res.status(404).send({resultado:"No se encontró el ID de Products"})
      }
 
-     const checkIDCart = await productModel.findById(cid);
-     if(!checkIDCart){
+     const cart = await cartModel.findById(cid);
+     if(!cart){
         res.status(404).send({resultado:"No se encontró el ID en Carrito"})
      }
-     const result = await cartModel.insertMany(cid,{_id:pid, quantity:quantity});
-     if(result)
-     res.status(200).send({resultado:"El producto se agregó correctamente"})
 
-        
+     if(cart){
+        cart.products.push({id_prod:pid,quantity:quantity});
+        const respuesta = await cartModel.findByIdAndUpdate(cid,cart); //Actualizo mi carrito
+        res.status(200).send({respuesta:'OK', message:respuesta})
+     }
     } catch (error) {
-        res.status(404).send({resultado:"no se pudo actualizar el carrito"})
+        res.status(404).send({resultado:"no se pudo actualizar el carrito", message:error})
     }
 
 })
