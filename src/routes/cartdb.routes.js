@@ -23,31 +23,26 @@ cartRouterDB.get('/', async(req,res)=>{
 })
 
 cartRouterDB.post('/', async(req,res)=>{
-    await cartModel.create();
-   
-    res.status(200).send({resultado:"Producto agregado al carrito correctamente"})
+    try {
+     const succes = await cartModel.create();
+      res.status(200).send({respuesta:'Producto creado correctamente', message:succes})  
+    } catch (error) {
+        res.status(404).send({respuesta:"No se pudo crear el producto", message:error})
+    }
 
 })
 
 
-cartRouterDB.post('/:pid/products/:cid', async(req,res)=>{
-    const {cid,pid} = req.params
+cartRouterDB.post('/:cid/products/:pid', async(req,res)=>{
+    const {cid,pid} = req.params;
     const {quantity} = req.body
     try {
-     const checkIDProduct = await productModel.findById(pid);
-     if(!checkIDProduct){
-        res.status(404).send({resultado:"No se encontró el ID de Products"})
+     const cart = await productModel.findById(cid);
+     if(cart){
+        cart.products.push({_id:pid,quantity:quantity})
+        const result = await cartModel.findByIdAndUpdate(cid,cart);
+        res.status(200).send({resultado:"El producto se agregó correctamente", message:result})
      }
-
-     const checkIDCart = await productModel.findById(cid);
-     if(!checkIDCart){
-        res.status(404).send({resultado:"No se encontró el ID en Carrito"})
-     }
-     const result = await cartModel.insertMany(cid,{_id:pid, quantity:quantity});
-     if(result)
-     res.status(200).send({resultado:"El producto se agregó correctamente"})
-
-        
     } catch (error) {
         res.status(404).send({resultado:"no se pudo actualizar el carrito"})
     }
