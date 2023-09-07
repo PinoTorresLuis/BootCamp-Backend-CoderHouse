@@ -8,23 +8,27 @@ import { Server } from 'socket.io';
 import { engine } from 'express-handlebars'
 
 //import routerProds from './routes/products.routes.js';
+
 //import cartRouter from './routes/cart.routes.js';
+
+//import { ProductManager } from './controllers/productManager.js';
+
+//const manager = new ProductManager ('src/models/productos.json');
 
 //Ruta de HandleBars
 import routerHandleBars from './routes/views.routes.js';
+
 //Ruta de UsuarioDB
 import userRouter from './routes/users.routes.js';
 //Ruta de ProductsDB
 import productRouter from './routes/productsdb.routes.js';
-//Ruta de CartProducts DB
+//Ruta de CartProductsDB
 import cartRouterDB from './routes/cartdb.routes.js';
-
-import { ProductManager } from './controllers/productManager.js';
-
+//Ruta de MessagesDB
+import { messagesModel } from './models/messages.models.js';
 
 const PORT = 4000;
 const app = express();
-const manager = new ProductManager ('src/models/productos.json');
 
 //Server
 //Se ubica acá arriba porque Socket io necesita saber la configuración de los servidores
@@ -59,19 +63,36 @@ mongoose.connect('mongodb+srv://luispino:coderhouse@clustercoder.rrpt8ts.mongodb
 .then(()=>console.log("DB conectada"))
 .catch((e)=>console.log("Error en conexión a MONGO DB Atlas", e));
 
+
+let messages = [];
 //Conexión de Socket.io
 io.on("connection", (socket)=>{
     console.log("Conexión con Socket.io OK");
     
-  //Método para agregar el producto que proviene del Form
-    socket.on ('newProduct', async(info) =>{
+    socket.on("message", async data=>{
+      const { email, message } = data;
+      await messagesModel.create({
+        email,message});
+      const messages = await messagesModel.find();
+  
+      io.emit('messageLogs', messages);
+    })
+
+/*
+     Método para agregar el producto que proviene del Form
+     socket.on ('newProduct', async(info) =>{
         await manager.addProduct(info)
         const products = await manager.getProducts()
       socket.emit ('products',products);
+    }) 
+
+socket.on("message", data=>{
+      messages.push(data);
+      io.emit('messageLogs', messages)
     })
-  
+
    //Método para eliminar productos. Todavía no puedo hacerlo funcionar
-/*    socket.on ('load', async (productId)=>{
+  socket.on ('load', async (productId)=>{
         const products = await manager.deleteProduct(productId);
         io.emit( "deleteProduct",products)
     })  */
