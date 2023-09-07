@@ -6,6 +6,7 @@ import { ProductManager } from '../controllers/productManager.js';
 
 const products = new ProductManager ('src/models/productos.json')
 
+
 //Routes
 
 routerHandleBars.get('/realtimeproducts', async (req,res)=>{
@@ -17,20 +18,6 @@ routerHandleBars.get('/realtimeproducts', async (req,res)=>{
 })
 
 
- routerHandleBars.post('/realtimeproducts', async (req,res)=>{
-    try {
-        const newProduct = req.body;
-        
-        // Agregar el producto utilizando el ProductManager
-        await products.addProduct(newProduct);
-        
-        res.status(201).send({ message: 'Producto creado correctamente' });
-    } catch (error) {
-        console.error('Error al agregar el producto:', error);
-        res.status(500).send({ message: 'Error al crear el producto' });
-    }
-}) 
-
 routerHandleBars.get ('/home', async (req,res)=>{
     res.render("home",{
         titulo: "home",
@@ -39,5 +26,14 @@ routerHandleBars.get ('/home', async (req,res)=>{
         products : await products.getProducts()
     })
 })
+
+routerHandleBars.get('/chat', async(req,res)=>{
+    res.render("chat",{
+        titutlo:"chat",
+        rutaJS:"chat.js",
+        rutaCSS:"chat.css"
+    })
+})
+
 
 export default routerHandleBars

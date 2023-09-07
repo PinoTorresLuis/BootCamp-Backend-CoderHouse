@@ -11,4 +11,4 @@ const messagesSchema = new Schema({
     },
 })
 
-export const messageModel = model ('message', messagesSchema)
+export const messagesModel = model ('messages', messagesSchema)
