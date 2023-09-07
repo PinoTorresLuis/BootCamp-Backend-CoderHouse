@@ -7,19 +7,16 @@ import {__dirname} from './path.js';
 import { Server } from 'socket.io';
 import { engine } from 'express-handlebars'
 
-//import routerProds from './routes/products.routes.js';
-
-//import cartRouter from './routes/cart.routes.js';
-
-//import { ProductManager } from './controllers/productManager.js';
-
-//const manager = new ProductManager ('src/models/productos.json');
+/*    Rutas que ya no se están usando
+import routerProds from './routes/products.routes.js';
+import cartRouter from './routes/cart.routes.js';
+import { ProductManager } from './controllers/productManager.js';
+const manager = new ProductManager ('src/models/productos.json');
+Ruta de UsuarioDB
+import userRouter from './routes/users.routes.js'; */
 
 //Ruta de HandleBars
 import routerHandleBars from './routes/views.routes.js';
-
-//Ruta de UsuarioDB
-import userRouter from './routes/users.routes.js';
 //Ruta de ProductsDB
 import productRouter from './routes/productsdb.routes.js';
 //Ruta de CartProductsDB
@@ -48,10 +45,12 @@ app.set('views', path.resolve(__dirname, './views')) //Defino localización
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
 
+//Rutas que ya no se están usando
 //app.use ('/api/products', routerProds);
 //app.use('/api/carts/',cartRouter);
+//app.use('/api/users', userRouter);
+
 app.use('/static/', routerHandleBars);
-app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts',cartRouterDB);
 
@@ -63,8 +62,6 @@ mongoose.connect('mongodb+srv://luispino:coderhouse@clustercoder.rrpt8ts.mongodb
 .then(()=>console.log("DB conectada"))
 .catch((e)=>console.log("Error en conexión a MONGO DB Atlas", e));
 
-
-let messages = [];
 //Conexión de Socket.io
 io.on("connection", (socket)=>{
     console.log("Conexión con Socket.io OK");
@@ -74,11 +71,11 @@ io.on("connection", (socket)=>{
       await messagesModel.create({
         email,message});
       const messages = await messagesModel.find();
-  
       io.emit('messageLogs', messages);
     })
 
-/*
+     
+/*      Métodos de desafios anteriores
      Método para agregar el producto que proviene del Form
      socket.on ('newProduct', async(info) =>{
         await manager.addProduct(info)
@@ -86,17 +83,11 @@ io.on("connection", (socket)=>{
       socket.emit ('products',products);
     }) 
 
-socket.on("message", data=>{
-      messages.push(data);
-      io.emit('messageLogs', messages)
-    })
-
    //Método para eliminar productos. Todavía no puedo hacerlo funcionar
   socket.on ('load', async (productId)=>{
         const products = await manager.deleteProduct(productId);
         io.emit( "deleteProduct",products)
     })  */
-
 })
 
 

@@ -10,12 +10,18 @@ Swal.fire ({
     title:"User email",
     text: "Please enter your email",
     input: "text",
-    inputValidator: (valor) =>{
-        return !valor && 'Ingrese un email válido'
+    inputValidator: (value) =>{
+        if(!value){
+            return 'please complete the field'
+        }
+        const emailRegex =  /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+        if(!emailRegex.test(value)){
+            return 'Please enter a valid name'
+        }
     },
     allowOutsideClick : false
-}).then (resultado =>{
-    email = resultado.value
+}).then (result =>{
+    email = result.value
 })
 
 btnChat.addEventListener('click', () =>{
