@@ -21,31 +21,32 @@ cartRouterDB.get('/', async(req,res)=>{
 })
 
 cartRouterDB.post('/', async(req,res)=>{
-    await cartModel.create();
-   
+    await cartModel.create({});
     res.status(200).send({resultado:"Producto agregado al carrito correctamente"})
 
 })
 
 
-cartRouterDB.post('/:pid/products/:cid', async(req,res)=>{
-    const {cid,pid} = req.params
-    const {quantity} = req.body
+cartRouterDB.post('/:cid/products/:pid', async(req,res)=>{
+    const {cid,pid} = req.params;
+    const {quantity} = req.body;
+
     try {
-     const checkIDProduct = await productModel.findById(pid);
-     if(!checkIDProduct){
+     const productID = await productModel.findById(pid);
+     if(!productID){
         res.status(404).send({resultado:"No se encontró el ID de Products"})
      }
 
-     const checkIDCart = await productModel.findById(cid);
-     if(!checkIDCart){
+     const cart = await cartModel.findById(cid);
+     if(!cart){
         res.status(404).send({resultado:"No se encontró el ID en Carrito"})
      }
-     const result = await cartModel.insertMany(cid,{_id:pid, quantity:quantity});
-     if(result)
-     res.status(200).send({resultado:"El producto se agregó correctamente"})
 
-        
+     if(cart){
+        cart.products.push({id_prod:pid,quantity:quantity});
+        const respuesta = await cartModel.findByIdAndUpdate(cid,cart); //Actualizo mi carrito
+        res.status(200).send({respuesta:'OK', message:respuesta})
+     }
     } catch (error) {
         res.status(404).send({resultado:"no se pudo actualizar el carrito", message:error})
     }
