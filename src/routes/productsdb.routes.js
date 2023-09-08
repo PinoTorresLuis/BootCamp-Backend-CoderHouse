@@ -6,7 +6,8 @@ const productRouter = Router();
 productRouter.get('/', async(req,res)=>{
     const {limit} = req.query
     try {
-        const prods = await productModel.find().limit(limit);
+        const prods = await productModel.paginate({title:"Ñoqui"},{limit:limit});
+        console.log(prods);
         res.status(200).send({resultado:'Solicitud de productos correcta', message:prods})
     } catch (e) {
         res.status(400).send({e:'Error al consultar los productos',e});
