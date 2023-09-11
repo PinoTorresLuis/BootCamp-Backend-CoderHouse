@@ -1,3 +1,4 @@
+
 import express from 'express';
 import mongoConnect from './database.js';
 
@@ -25,9 +26,6 @@ import productRouter from './routes/productsdb.routes.js';
 import cartRouterDB from './routes/cartdb.routes.js';
 //Ruta de MessagesDB
 import { messagesModel } from './models/messages.models.js';
-//Ruta de OrderModelDB
-import {orderModel} from './models/order.models.js';
-
 
 const PORT = 4000;
 const app = express();

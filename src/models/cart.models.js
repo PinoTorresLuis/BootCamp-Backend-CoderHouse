@@ -22,4 +22,8 @@ const cartSchema = new Schema ({
     }
 })
 
+cartSchema.pre('findOne',()=>{
+    this.populate('products.id_prod');
+})
+
 export const cartModel = model ('carts', cartSchema)
