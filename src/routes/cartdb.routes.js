@@ -7,7 +7,7 @@ const cartRouterDB = Router();
 
 cartRouterDB.get('/:id', async(req,res)=>{
     const {id} = req.params;
-    const prods = await cartModel.findOne(id).populate('products.id_prod');
+    const prods = await cartModel.findById(id)//.populate('products.id_prod');
     if (prods){
         res.status(200).send({resultado:"Tu producto en el carrito es:", message:prods})
     }else {
@@ -21,8 +21,9 @@ cartRouterDB.get('/', async(req,res)=>{
 })
 
 cartRouterDB.post('/', async(req,res)=>{
-    await cartModel.create({});
-    res.status(200).send({resultado:"Producto agregado al carrito correctamente"})
+    const cart = await cartModel.create({});
+    if(cart)
+    res.status(200).send({resultado:"Producto agregado al carrito correctamente",cart})
 
 })
 

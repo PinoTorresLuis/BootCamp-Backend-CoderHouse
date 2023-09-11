@@ -1,4 +1,3 @@
-
 import express from 'express';
 import mongoConnect from './database.js';
 
@@ -7,8 +6,6 @@ import {__dirname} from './path.js';
 
 import { Server } from 'socket.io';
 import { engine } from 'express-handlebars'
-
-
 
 /*    Rutas que ya no se están usando
 import routerProds from './routes/products.routes.js';
@@ -30,6 +27,7 @@ import { messagesModel } from './models/messages.models.js';
 const PORT = 4000;
 const app = express();
 mongoConnect();
+
 //Server
 //Se ubica acá arriba porque Socket io necesita saber la configuración de los servidores
 const server = app.listen(PORT,()=>{

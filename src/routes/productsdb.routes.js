@@ -4,31 +4,29 @@ import { productModel } from "../models/products.models.js";
 const productRouter = Router();
 
 productRouter.get('/', async(req,res)=>{
-    const {limit,page,sort,category,direction} = req.query;
+    const {limit,page,sort,category, status} = req.query;
 
     const limitNumber = parseInt(limit) || 10;
     const pageNumber = parseInt(page) || 1;
 
-    let sortObjet ;
-    const sortDirection = direction === 'desc' ? -1 : 1;
-    switch(sort){
-        case 'price':
-            sortObjet = {price : sortDirection};
-            break;
-        case 'quantity':
-            sortObjet = {quantity: sortDirection};
-            break;
-        default :
-        sortObjet = {};
+    let sortOption;
+	sort == 'asc' && (sortOption = 'price');
+	sort == 'desc' && (sortOption = '-price');
+
+
+    const options = {
+        page: pageNumber,
+        limit:limitNumber,
+        sort:sortOption || null
     }
 
+    
+	const query = {};
+	category && (query.category = category);
+	status && (query.status = status);
+
     try {
-        const options = {
-            page: pageNumber,
-            limit:limitNumber,
-            sort:sortObjet,
-        }
-        const prods = await productModel.paginate({}, options);
+        const prods = await productModel.paginate(query, options);
         console.log(prods);
         res.status(200).send({resultado:'Solicitud de productos correcta', message:prods})
     } catch (e) {
