@@ -24,7 +24,7 @@ cartRouterDB.get('/:cid', async(req,res)=>{
 cartRouterDB.post('/', async(req,res)=>{
     try {
         const cart = await cartModel.create({});
-        res.status(200).send({resultado:"Producto agregado al carrito correctamente",cart})
+        res.status(200).send({resultado:"Agregaste tu carrito",cart})
     } catch (error) {
         res.status(400).send({resultado:"Error al crear el producto",cart})    
     }
@@ -32,32 +32,6 @@ cartRouterDB.post('/', async(req,res)=>{
 
 
 cartRouterDB.post('/:cid/products/:pid', async (req, res) => {
-	const { cid, pid } = req.params;
-	const { quantity } = req.body;
-
-	try {
-		const cart = await cartModel.findById(cid);
-
-		if (cart) {
-			const productExists = cart.products.find(prod => prod.id_prod == pid);
-			if (productExists) {
-				productExists.quantity += quantity;
-			} else {
-				res.status(404).send({ resultado: 'Product Not Found', message: cart });
-				return;
-			}
-			await cart.save();
-			res.status(200).send({ resultado: 'OK', message: cart });
-		} else {
-			res.status(404).send({ resultado: 'Cart Not Found', message: cart });
-		}
-	} catch (error) {
-		res.status(400).send({ error: `Error al agregar productos: ${error}` });
-	}
-});
-
-
-cartRouterDB.put('/:cid/products/:pid', async (req, res) => {
 	const { cid, pid } = req.params;
 
 	try {
@@ -71,11 +45,13 @@ cartRouterDB.put('/:cid/products/:pid', async (req, res) => {
 
 		if (cart) {
 			const productExists = cart.products.find(prod => prod.id_prod == pid);
-			productExists
-				? productExists.quantity++
-				: cart.products.push({ id_prod: product._id, quantity: 1 });
+			if(productExists){
+				productExists.quantity++
+			} else{
+				cart.products.push({ id_prod: product._id, quantity: 1 });
+			}
 			await cart.save();
-			res.status(200).send({ resultado: 'OK', message: cart });
+			res.status(200).send({ resultado: 'Producto agregado al carrito correctamente', message: cart });
 		} else {
 			res.status(404).send({ resultado: 'Cart Not Found', message: cart });
 		}
@@ -87,40 +63,62 @@ cartRouterDB.put('/:cid/products/:pid', async (req, res) => {
 
 cartRouterDB.put('/:cid', async (req, res) => {
 	const { cid } = req.params;
-	const { updateProducts } = req.body;
+	const { dataProducts } = req.body;
 
 	try {
 		const cart = await cartModel.findById(cid);
-        cart.products = updateProducts;
-        let result = await cartModel.findByIdAndUpdate(cid,cart)
-        res.status(200).send({resultado:'OK', mensaje:result})
-    }catch (error) {
-		res.status(400).send({ error: `Error al agregar productos: ${error}` });
-	} 
-	/* 	updateProducts.forEach(prod => {
-			const productExists = cart.products.find(cartProd => cartProd.id_prod == prod.id_prod);
-			if (productExists) {
-				productExists.quantity += prod.quantity;
-			} else {    
-				cart.products.push(prod);
+		console.log(cart);
+		if(!cart){
+			res.status(404).send({resultado:"no existe el carrito"})	
 			}
-		});
-		await cart.save();
-		cart
-			? res.status(200).send({ resultado: 'OK', message: cart })
-			: res.status(404).send({ resultado: 'Not Found', message: cart });
+
+		const pid = await productModel.findById(dataProducts.id_prod);
+		console.log(pid)
+		if(!pid){
+		res.status(404).send({resultado:"no existe el producto", mensaje:pid})	
+		}
+
 	} catch (error) {
 		res.status(400).send({ error: `Error al agregar productos: ${error}` });
-	} */
+	} 
 });
+
+
+cartRouterDB.put('/:cid/products/:pid', async (req, res) => {
+	const { cid, pid } = req.params;
+	const { quantity } = req.body;
+
+	try {
+		const cart = await cartModel.findById(cid);
+
+		if (cart) {
+			const productExists = cart.products.find(prod => prod.id_prod == pid);
+			if (productExists) {
+				productExists.quantity += quantity;
+			} else {
+				res.status(404).send({ resultado: 'Product Not Found', message: cart });
+				
+			}
+			await cart.save();
+			res.status(200).send({ resultado: 'Cantidad aumentada correctamente', message: cart });
+		} else {
+			res.status(404).send({ resultado: 'Cart Not Found', message: cart });
+		}
+	} catch (error) {
+		res.status(400).send({ error: `Error al agregar productos: ${error}` });
+	}
+});
+
 
 cartRouterDB.delete('/:cid', async (req, res) => {
 	const { cid } = req.params;
 	try {
 		const cart = await cartModel.findByIdAndUpdate(cid, { products: [] });
-		cart
-			? res.status(200).send({ resultado: 'OK', message: cart })
-			: res.status(404).send({ resultado: 'Not Found', message: cart });
+		if(cart){
+		res.status(200).send({ resultado: 'El carrito se vació correctamente', message: cart });
+		} else {
+		 res.status(404).send({ resultado: 'Not Found', message: cart })
+		};
 	} catch (error) {
 		res.status(400).send({ error: `Error al vaciar el carrito: ${error}` });
 	}
@@ -151,6 +149,4 @@ cartRouterDB.delete('/:cid/products/:pid', async (req, res) => {
 	}
 });
 
-//64ff11df978c39b68eadb03c prod
-//64ff70375903ff49ac47649b cart
 export default cartRouterDB

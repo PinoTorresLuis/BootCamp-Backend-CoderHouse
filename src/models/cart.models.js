@@ -22,5 +22,9 @@ const cartSchema = new Schema ({
     }
 })
 
+cartSchema.pre('find', function () {
+	this.populate('products.id_prod');
+});
+// por defecto hace un populate en el find
 
 export const cartModel = model ('carts', cartSchema)
