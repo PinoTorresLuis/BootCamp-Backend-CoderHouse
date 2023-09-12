@@ -63,24 +63,35 @@ cartRouterDB.post('/:cid/products/:pid', async (req, res) => {
 
 cartRouterDB.put('/:cid', async (req, res) => {
 	const { cid } = req.params;
-	const { dataProducts } = req.body;
+	const updateProducts = req.body;
 
 	try {
 		const cart = await cartModel.findById(cid);
-		console.log(cart);
 		if(!cart){
 			res.status(404).send({resultado:"no existe el carrito"})	
 			}
 
-		const pid = await productModel.findById(dataProducts.id_prod);
-		console.log(pid)
+		const pid = await productModel.findById(updateProducts.id_prod);
+		console.log(pid);
 		if(!pid){
 		res.status(404).send({resultado:"no existe el producto", mensaje:pid})	
 		}
 
+		pid.forEach(prod => {
+			const productExists = cart.products.find(cartProd => cartProd.id_prod == prod.id_prod);
+			if (productExists) {
+				productExists.quantity += prod.quantity;
+			} else {
+				cart.products.push(prod);
+			}
+		});
+		await cart.save();
+		cart
+			? res.status(200).send({ resultado: 'OK', message: cart })
+			: res.status(404).send({ resultado: 'Not Found', message: cart }); 
 	} catch (error) {
 		res.status(400).send({ error: `Error al agregar productos: ${error}` });
-	} 
+	}
 });
 
 
