@@ -7,13 +7,15 @@ import {__dirname} from './path.js';
 import { Server } from 'socket.io';
 import { engine } from 'express-handlebars'
 
-/*    Rutas que ya no se están usando
+/*   <---- Importaciones de rutas que ya no se están usando ---->
 import routerProds from './routes/products.routes.js';
 import cartRouter from './routes/cart.routes.js';
+
+     <---- Ruta de UsuarioDB ---->
+import userRouter from './routes/users.routes.js'; 
+     <---- Ruta de ProductManager ---->
 import { ProductManager } from './controllers/productManager.js';
-const manager = new ProductManager ('src/models/productos.json');
-Ruta de UsuarioDB
-import userRouter from './routes/users.routes.js'; */
+const manager = new ProductManager ('src/models/productos.json');*/
 
 //Ruta de HandleBars
 import routerHandleBars from './routes/views.routes.js';
@@ -24,21 +26,21 @@ import cartRouterDB from './routes/cartdb.routes.js';
 //Ruta de MessagesDB
 import { messagesModel } from './models/messages.models.js';
 
-const PORT = 4000;
-const app = express();
+const PORT = 4000; //Almaceno en el puerto que voy a trabajar
+const app = express(); //Inicio el servidor Express
+//Inicio mi servidor MongoDB
 mongoConnect();
 
 //Server
-//Se ubica acá arriba porque Socket io necesita saber la configuración de los servidores
 const server = app.listen(PORT,()=>{
     console.log("SERVIDOR FUNCIONANDO EN PUERTO:", PORT);
 })
-
-const io = new Server(server);  //Inicio el server
+//Se ubica acá arriba apropósito porque Socket io necesita saber la configuración de los servidores
+const io = new Server(server);  //Inicio el server WebSocket
 
 //Middlewares
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.json()); //Se utiliza para que mis rutas puedan leer archivos json
+app.use(express.urlencoded({extended:true})); //Se utiliza para optimizar la búsqueda en las rutas
 app.engine('handlebars', engine())//Defino que voy a trabajar con handlebars
 app.set('view engine', 'handlebars');//Defino extensión
 app.set('views', path.resolve(__dirname, './views')) //Defino localización
@@ -54,17 +56,15 @@ app.use('/static', express.static(path.join(__dirname,'/public')));
 app.use('/static/', routerHandleBars);
 app.use('/api/products', productRouter);
 app.use('/api/carts',cartRouterDB);
-
 app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
     res.send("Error 404: Page not found");
 })
-
-
 
 //Conexión de Socket.io
 io.on("connection", (socket)=>{
     console.log("Conexión con Socket.io OK");
     
+    //Método para agregar los mensajes a la base de datos
     socket.on("message", async data=>{
       const { email, message } = data;
       await messagesModel.create({
@@ -73,20 +73,12 @@ io.on("connection", (socket)=>{
       io.emit('messageLogs', messages);
     })
 
-     
-/*      Métodos de desafios anteriores
-     Método para agregar el producto que proviene del Form
-     socket.on ('newProduct', async(info) =>{
-        await manager.addProduct(info)
-        const products = await manager.getProducts()
-      socket.emit ('products',products);
-    }) 
-
-   //Método para eliminar productos. Todavía no puedo hacerlo funcionar
-  socket.on ('load', async (productId)=>{
-        const products = await manager.deleteProduct(productId);
-        io.emit( "deleteProduct",products)
-    })  */
+   //Método para agregar el producto que proviene del Form
+    socket.on ('newProduct', async(info) =>{
+       await manager.addProduct(info)
+       const products = await manager.getProducts()
+     socket.emit ('products',products);
+   }) 
 })
 
 

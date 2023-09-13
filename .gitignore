@@ -1,6 +1,4 @@
 
 /node_modules
-/backup.js
-/bd.txt
-resumenDB.txt
 .env
+src/backup  

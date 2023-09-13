@@ -6,12 +6,12 @@ const cartSchema = new Schema ({
             {   
                 id_prod:{
                     type: Schema.Types.ObjectId, //ID autogenerando desde MongoDB
-                    ref: 'products',
+                    ref: 'products', //Referencia a la colleción Products y así poder "joinearlos"
                     required: true
                 },
                 quantity: {
                     type:Number,
-                    required: true //siempre tiene que empezar en default a 1
+                    required: true //siempre tiene que empezar en default a 1 
                 }
             }
         ],
@@ -22,9 +22,9 @@ const cartSchema = new Schema ({
     }
 })
 
+// por defecto hace un populate en el find
 cartSchema.pre('find', function () {
 	this.populate('products.id_prod');
 });
-// por defecto hace un populate en el find
 
 export const cartModel = model ('carts', cartSchema)

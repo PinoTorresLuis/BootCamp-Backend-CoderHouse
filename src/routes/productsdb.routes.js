@@ -2,31 +2,33 @@ import { Router } from "express";
 import { productModel } from "../models/products.models.js";
 
 const productRouter = Router();
-
+//Ruta inicial de Products
 productRouter.get('/', async(req,res)=>{
+    //Definimos las opciones que va a poder ingresar mi usuario
     const {limit,page,sort,category, status} = req.query;
+  
+    const limitNumber = parseInt(limit) || 10;   //Limitamos que por default traiga 10 productos en la página o que el usuario pueda ingresar el límite
+    const pageNumber = parseInt(page) || 1; //Definimos que por defecto inicia en la página 1 o que el usuario elija qué página quiere navegar
 
-    const limitNumber = parseInt(limit) || 10;
-    const pageNumber = parseInt(page) || 1;
-
+    //Utilizamos la query.sort que viaja desde el lado del cliente para que según lo que ingrese ordene de forma Ascendente o Descendente
     let sortOption;
 	sort == 'asc' && (sortOption = 'price');
 	sort == 'desc' && (sortOption = '-price');
 
-
+    //Almacenamos las variables dentro del objeto Options para utilizarlo más adelante. Es lo que recomienda la documentación de Paginate -v2
     const options = {
         page: pageNumber,
         limit:limitNumber,
         sort:sortOption || null
     }
 
-    
+    //Acá definimos la posibilidad de buscar por categoria o status(disponibile). Lo vamos a utilizar más adelante
 	const query = {};
 	category && (query.category = category);
 	status && (query.status = status);
 
     try {
-        const prods = await productModel.paginate(query, options);
+        const prods = await productModel.paginate(query, options); //Pasamos los objetos dentro de los paramétros
         console.log(prods);
         res.status(200).send({resultado:'Solicitud de productos correcta', message:prods})
     } catch (e) {
@@ -34,6 +36,7 @@ productRouter.get('/', async(req,res)=>{
     }
 })
 
+//Ruta para traer un producto según su ID
 productRouter.get('/:id', async(req,res)=>{
     const {id} = req.params
     try {
@@ -44,10 +47,10 @@ productRouter.get('/:id', async(req,res)=>{
         res.status(404).send({resultado:"Not Found", message:prod})
         }
     } catch (e) {
-        res.status(400).send({e:'Error al consultar los productos',e});
+        res.status(400).send({e:'Error al consultar el producto',e});
     }
 })
-
+//Ruta para crear un producto
 productRouter.post('/', async(req,res)=>{
     const {title,description,stock,code,category,price} = req.body
     try {
@@ -61,13 +64,13 @@ productRouter.post('/', async(req,res)=>{
         res.status(400).send({e:"Todos los campos son obligatorios",e});
     }
 })
-
+//Ruta para actualizar un producto buscado por su ID
 productRouter.put('/:id', async(req,res)=>{
     const {id} = req.params
     const {title,description,stock,code,category,price,status} = req.body
     try {
         const succes = await productModel.findByIdAndUpdate(id,{
-            title,description,stock,code,category,price
+            title,description,stock,code,category,price,status
         });
         if(succes){
         res.status(200).send({resultado:'Producto actualizado correctamente', message:succes})
@@ -78,11 +81,11 @@ productRouter.put('/:id', async(req,res)=>{
         res.status(400).send({e:'Error al actualizar el producto',e});
     }
 })
-
+//Ruta para borrar un producto según su ID
 productRouter.delete('/:id', async(req,res)=>{
     const {id} = req.params
     try {
-        const succes = await productModel.findByIdAndDelete(id);
+        const succes = await productModel.findByIdAndDelete(id); //Utilizamos el método FindByIDAndUpdate que mismo mongoDB lo provee.
         if(succes){
         res.status(200).send({resultado:'Producto borrado correctamente', message:succes})
         }else{
@@ -92,7 +95,5 @@ productRouter.delete('/:id', async(req,res)=>{
         res.status(400).send({e:'Error al eliminar el producto',e});
     }
 })
-
-
 
 export default productRouter;

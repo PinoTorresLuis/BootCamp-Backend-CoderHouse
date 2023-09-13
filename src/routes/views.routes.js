@@ -6,9 +6,9 @@ import { ProductManager } from '../controllers/productManager.js';
 
 const products = new ProductManager ('src/models/productos.json')
 
+//Routes de las views
 
-//Routes
-
+//Ruta del HandleBars Realtimeproducts
 routerHandleBars.get('/realtimeproducts', async (req,res)=>{
     res.render("realTimeProducts",{ //Ruta para mostrar el formulario
         titulo: "realTimeProducts",
@@ -17,7 +17,7 @@ routerHandleBars.get('/realtimeproducts', async (req,res)=>{
     })
 })
 
-
+//Ruta del HandleBars Home
 routerHandleBars.get ('/home', async (req,res)=>{
     res.render("home",{
         titulo: "home",
@@ -27,6 +27,7 @@ routerHandleBars.get ('/home', async (req,res)=>{
     })
 })
 
+//Ruta del HandleBars Chat
 routerHandleBars.get('/chat', async(req,res)=>{
     res.render("chat",{
         titutlo:"chat",
@@ -34,6 +35,5 @@ routerHandleBars.get('/chat', async(req,res)=>{
         rutaCSS:"chat.css"
     })
 })
-
 
 export default routerHandleBars
