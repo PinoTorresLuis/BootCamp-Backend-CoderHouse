@@ -1,4 +1,6 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import mongoConnect from './database.js';
 
 import path from 'path';
@@ -25,6 +27,8 @@ import productRouter from './routes/productsdb.routes.js';
 import cartRouterDB from './routes/cartdb.routes.js';
 //Ruta de MessagesDB
 import { messagesModel } from './models/messages.models.js';
+//Ruta de Cookies
+import cookiesRouter from './routes/cookie.routes.js';
 
 const PORT = 4000; //Almaceno en el puerto que voy a trabajar
 const app = express(); //Inicio el servidor Express
@@ -44,6 +48,13 @@ app.use(express.urlencoded({extended:true})); //Se utiliza para optimizar la bú
 app.engine('handlebars', engine())//Defino que voy a trabajar con handlebars
 app.set('view engine', 'handlebars');//Defino extensión
 app.set('views', path.resolve(__dirname, './views')) //Defino localización
+app.use(cookieParser(process.env.SIGNED_COOKIE)); //Cookie Parser
+//Configuración de la sesión de mi Usuario en mi APP
+app.use(session({
+  secret:process.env.SESSION_SECRET,
+  resave:true,
+  saveUninitialized:true
+}))
 
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
@@ -56,6 +67,7 @@ app.use('/static', express.static(path.join(__dirname,'/public')));
 app.use('/static/', routerHandleBars);
 app.use('/api/products', productRouter);
 app.use('/api/carts',cartRouterDB);
+app.use('/cookies', cookiesRouter);
 app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
     res.send("Error 404: Page not found");
 })
