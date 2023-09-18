@@ -15,9 +15,12 @@ cookiesRouter.get('/getCookies', (req,res)=>{
 })
 
 cookiesRouter.get('/session', (req,res)=>{
-    if(req.session.counter){ /* Counter es la variable  que creo yo para almacenar la sesión.
+    if(req.session.counter){ 
+    req.session.counter++
+    res.send(`Entraste ${req.session.counter} veces a la página`)    
+    /* Counter es la variable  que creo yo para almacenar la sesión.
     Comrpuebo si existe la variable counter en la sesión 
-
+    
      éste código hace que la sesión dure mientras estoy navegando en la aplicación. Una vez que cierro la página se termina la sesión. Si vuelvo a ingresar, se crea un nuevo identificador
      req.session.counter ++ //aumento en 1
      res.send(`Has entrado esta cantidad de veces:${req.session.counter} en la página`); */
@@ -29,17 +32,20 @@ cookiesRouter.get('/session', (req,res)=>{
 
 cookiesRouter.get('/login', (req,res)=>{
     const {email, password} = req.body;
-
+/* esto es para el POSTMAN
     if (email === "admin@admin.com" && password === "1234"){
         req.session.email = email;
         req.session.password = password;
         console.log(email,password);
-
-        return res.send("Usuario logueado");
-    }else { 
+        }else { 
     "Usuario o contraseña incorrectas"  
     }
     return res.send("No se pudo iniciar sesión");
+ */
+    req.session.email = email;
+    req.session.password = password
+
+    return res.send("Usuario logueado");
 })
 
 cookiesRouter.get('/logout', (req,res)=>{

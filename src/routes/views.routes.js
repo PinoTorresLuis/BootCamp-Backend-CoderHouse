@@ -36,4 +36,14 @@ routerHandleBars.get('/chat', async(req,res)=>{
     })
 })
 
+
+//Ruta del HandleBars Login
+routerHandleBars.get('/users', async(req,res)=>{
+    res.render("login",{
+        titutlo:"login",
+        rutaJS:"login.js",
+        rutaCSS:"login.css"
+    })
+})
+
 export default routerHandleBars
