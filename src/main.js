@@ -37,6 +37,7 @@ import cookiesRouter from './routes/cookie.routes.js';
 import sessionRouter from './routes/sessions.routes.js';
 //Ruta de Usuarios
 import userRouter from './routes/users.routes.js';
+import { userModel } from './models/users.model.js';
 
 const PORT = 4000; //Almaceno en el puerto que voy a trabajar
 const app = express(); //Inicio el servidor Express
@@ -109,6 +110,14 @@ io.on("connection", (socket)=>{
        const products = await manager.getProducts()
      socket.emit ('products',products);
    }) 
+
+   socket.on('singup', async(data)=>{
+    const {first_name,lastname,age,email,password} = data;
+    await userModel.create({
+      first_name,lastname,age,email,password
+    })
+    console.log(data);
+   } )
 })
 
 

@@ -15,6 +15,7 @@ sessionRouter.post('/login',async (req,res)=>{
         if(user.password === password){
             req.session.login = true;
             res.status(200).send({respuesta:"Usuario logueado", message:user})
+            //res.redirect('ruta',200,'info:info')
         } else{
             res.status(401).send({error:"Error de contraseña",message:user})
         }

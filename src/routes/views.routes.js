@@ -1,13 +1,11 @@
 import { Router } from "express";
+import { ProductManager } from '../controllers/productManager.js';
 
 const routerHandleBars = Router();
-
-import { ProductManager } from '../controllers/productManager.js';
 
 const products = new ProductManager ('src/models/productos.json')
 
 //Routes de las views
-
 //Ruta del HandleBars Realtimeproducts
 routerHandleBars.get('/realtimeproducts', async (req,res)=>{
     res.render("realTimeProducts",{ //Ruta para mostrar el formulario
@@ -30,7 +28,7 @@ routerHandleBars.get ('/home', async (req,res)=>{
 //Ruta del HandleBars Chat
 routerHandleBars.get('/chat', async(req,res)=>{
     res.render("chat",{
-        titutlo:"chat",
+        titulo:"chat",
         rutaJS:"chat.js",
         rutaCSS:"chat.css"
     })
@@ -39,11 +37,20 @@ routerHandleBars.get('/chat', async(req,res)=>{
 
 //Ruta del HandleBars Login
 routerHandleBars.get('/users', async(req,res)=>{
-    res.render("login",{
-        titutlo:"login",
+    res.render("singIn",{
+        titulo:"login",
         rutaJS:"login.js",
         rutaCSS:"login.css"
     })
 })
+
+routerHandleBars.get('/users/singUp', async(req,res)=>{
+    res.render("singUp",{
+        titulo:"login",
+        rutaJS:"login.js",
+        rutaCSS:"login.css"
+    })
+})
+
 
 export default routerHandleBars
