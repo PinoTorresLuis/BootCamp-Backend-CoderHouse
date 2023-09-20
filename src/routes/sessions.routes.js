@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { userModel } from "../models/users.model.js";
+import auth from "../auth.js";
 
 const sessionRouter = Router();
 
@@ -14,9 +15,10 @@ sessionRouter.post('/login',async (req,res)=>{
     if(user){
         if(user.password === password){
             req.session.login = true;
-            res.status(200).send({respuesta:"Usuario logueado", message:user})
-            res.redirect('./home',200,'info:info');
-        } else{
+            res.status(200).send({respuesta:"Admin logueado", message:user})
+            //res.redirect('../views/home.handlebars',200,'info:info');
+        } 
+         else{
             res.status(401).send({error:"Error de contraseña",message:user})
         }
     }else { 
@@ -27,11 +29,18 @@ sessionRouter.post('/login',async (req,res)=>{
     }
 });
 
+sessionRouter.get('/admin', auth,(req,res)=>{
+    res.send("Bienvenido Admin")
+})
+
 sessionRouter.get('/logout', (req,res)=>{
     if(req.session.login){
         req.session.destroy();
+        res.render("/signIn");
     }
     res.status(200).send({resultado:"Sesión eliminada"})
 });
+
+
 
 export default sessionRouter;

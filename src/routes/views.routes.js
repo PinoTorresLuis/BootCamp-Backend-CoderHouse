@@ -37,7 +37,7 @@ routerHandleBars.get('/chat', async(req,res)=>{
 
 //Ruta del HandleBars para registrarse
 routerHandleBars.get('/users/register', async(req,res)=>{
-    res.render("singUp",{
+    res.render("signUp",{
         titulo:"Register",
         rutaJS:"singup.js",
     })
@@ -51,5 +51,11 @@ routerHandleBars.get('/users/signIn', async(req,res)=>{
     })
 })
 
+routerHandleBars.get('/products', (req, res) => {
+	res.render('products', {
+		rutaCSS: 'products',
+		rutaJS: 'products',
+	});
+});
 
 export default routerHandleBars

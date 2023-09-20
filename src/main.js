@@ -37,7 +37,7 @@ import cookiesRouter from './routes/cookie.routes.js';
 import sessionRouter from './routes/sessions.routes.js';
 //Ruta de Usuarios
 import userRouter from './routes/users.routes.js';
-import { userModel } from './models/users.model.js';
+
 
 const PORT = 4000; //Almaceno en el puerto que voy a trabajar
 const app = express(); //Inicio el servidor Express
@@ -73,6 +73,8 @@ app.use(session({
   saveUninitialized:true
 }))
 
+
+
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
 
@@ -104,7 +106,7 @@ io.on("connection", (socket)=>{
       io.emit('messageLogs', messages);
     })
 
-   //Método para agregar el producto que proviene del Form
+  /*  //Método para agregar el producto que proviene del Form
     socket.on ('newProduct', async(info) =>{
        await manager.addProduct(info)
        const products = await manager.getProducts()
@@ -117,7 +119,22 @@ io.on("connection", (socket)=>{
       first_name,lastname,age,email,password
     })
     console.log(data);
-   } )
+   } ) */
+
+   socket.on('load', async () => {
+		const data = await productModel.paginate({}, { limit: 5 });
+		socket.emit('products', data);
+	});
+
+	socket.on('previousPage', async page => {
+		const data = await productModel.paginate({}, { limit: 5, page: page });
+		socket.emit('products', data);
+	});
+
+	socket.on('nextPage', async page => {
+		const data = await productModel.paginate({}, { limit: 5, page: page });
+		socket.emit('products', data);
+	});
 })
 
 
