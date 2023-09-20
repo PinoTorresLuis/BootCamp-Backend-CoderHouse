@@ -35,19 +35,18 @@ routerHandleBars.get('/chat', async(req,res)=>{
 })
 
 
-//Ruta del HandleBars Login
-routerHandleBars.get('/users', async(req,res)=>{
-    res.render("singIn",{
-        titulo:"login",
-        rutaJS:"login.js",
-        rutaCSS:"login.css"
+//Ruta del HandleBars para registrarse
+routerHandleBars.get('/users/register', async(req,res)=>{
+    res.render("singUp",{
+        titulo:"Register",
+        rutaJS:"singup.js",
     })
 })
 
-routerHandleBars.get('/users/singUp', async(req,res)=>{
-    res.render("singUp",{
-        titulo:"login",
-        rutaJS:"login.js",
+routerHandleBars.get('/users/signIn', async(req,res)=>{
+    res.render("signIn",{
+        titulo:"SignIn",
+        rutaJS:"signIn.js",
         rutaCSS:"login.css"
     })
 })

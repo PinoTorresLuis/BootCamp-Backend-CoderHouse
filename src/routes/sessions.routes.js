@@ -15,7 +15,7 @@ sessionRouter.post('/login',async (req,res)=>{
         if(user.password === password){
             req.session.login = true;
             res.status(200).send({respuesta:"Usuario logueado", message:user})
-            //res.redirect('ruta',200,'info:info')
+            res.redirect('./home',200,'info:info');
         } else{
             res.status(401).send({error:"Error de contraseña",message:user})
         }
@@ -27,7 +27,7 @@ sessionRouter.post('/login',async (req,res)=>{
     }
 });
 
-sessionRouter.get('logout', (req,res)=>{
+sessionRouter.get('/logout', (req,res)=>{
     if(req.session.login){
         req.session.destroy();
     }
