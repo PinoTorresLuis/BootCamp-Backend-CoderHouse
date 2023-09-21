@@ -6,10 +6,7 @@ login.addEventListener('submit',(e)=>{
     const formData = new FormData(e.target);
     const log = Object.fromEntries(formData);
     console.log("Datos a enviar:",log);
- /*    Swal.fire(
-        'Registro realizado correctamente',
-        'success'
-    ) */
+ 
     login.reset();
 })
 

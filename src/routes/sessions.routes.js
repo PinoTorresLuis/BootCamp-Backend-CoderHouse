@@ -4,7 +4,7 @@ import auth from "../auth.js";
 
 const sessionRouter = Router();
 
-sessionRouter.post('/login', auth, async (req,res)=>{
+sessionRouter.post('/login',auth, async (req,res)=>{
     const {email, password} = req.body;
     console.log('Datos del formulario:', req.body);
     try {

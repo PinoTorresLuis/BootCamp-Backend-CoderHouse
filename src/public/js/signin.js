@@ -4,10 +4,7 @@ signIn.addEventListener("submit", (e)=>{
     const formData = new FormData(e.target);
     const login = Object.fromEntries(formData);
     console.log(login)
- /*          Swal.fire(
-            "Inicio de sesión correcto",
-            "success"
-          ); */
+      
           signIn.reset();
 
 })

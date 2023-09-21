@@ -1,9 +1,8 @@
 export default function auth (req,res,next){
-    const {email} = req.body
-    console.log(req.session.email);
+    const {email, password} = req.body
+    console.log(email,password);
 
-    if(req.session.email === "admin@admin.com"){
-        req.session.email = email;
+    if(email === "admin@admin.com" && password== "1234"){
         console.log("felicitaciones ingresaste correctamente", email)
         return res.redirect("/static/admin");
        
