@@ -1,11 +1,14 @@
-import { Router } from "express";
 //import { ProductManager } from '../controllers/productManager.js';
+//const products = new ProductManager ('src/models/productos.json')
+
+import { Router } from "express";
 import { productModel } from "../models/products.models.js";
 import { userModel } from "../models/users.model.js";
 const routerHandleBars = Router();
 
-//const products = new ProductManager ('src/models/productos.json')
-//Routes de las views
+
+//Rutas de las views
+
 //Ruta del HandleBars Realtimeproducts
 routerHandleBars.get('/realtimeproducts', async (req,res)=>{
     res.render("realTimeProducts",{ //Ruta para mostrar el formulario

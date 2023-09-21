@@ -70,8 +70,8 @@ app.use(session({
   }),
  // store : new fileStorage({path: './sessions',ttl:10000, retries:1}),
   secret:process.env.SESSION_SECRET,
-  resave:true,
-  saveUninitialized:true
+  resave:false,
+  saveUninitialized:false
 }))
 
 
