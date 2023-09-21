@@ -1,6 +1,6 @@
 const socket = io();
 
-const productsContainer = document.querySelector('#products-container');
+//const productsContainer = document.querySelector('#products-container');
 const pageNumber = document.querySelector('#page-number');
 const previousButton = document.querySelector('#prev-page-button');
 const nextButton = document.querySelector('#next-page-button');
@@ -10,8 +10,8 @@ let page;
 let cartId;
 
 socket.emit('load');
-
 socket.on('products', data => {
+	/* 
 	const products = data.docs;
 	productsContainer.innerHTML = '';
 	products.forEach(prod => {
@@ -32,7 +32,7 @@ socket.on('products', data => {
 			</button>
     </div>
     `;
-	});
+	}); */
     
 	page = data.page;
 	pageNumber.innerText = page;

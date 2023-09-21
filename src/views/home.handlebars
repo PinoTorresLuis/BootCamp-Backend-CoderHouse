@@ -2,9 +2,9 @@
 
       {{#if products}} 
        <h2>Nuestros productos</h2>   
+        <div class="container-product">
+          <div class="row">         
       {{#each products}}
-        <div class="container-products">
-          <div> 
           <p>Id: {{this.id}}</p>
           <p>Title: {{this.title}}</p>
           <p>Description: {{this.description}}</p>
@@ -13,11 +13,16 @@
           <p>Code: {{this.code}}</p>
           <p>Stock: {{this.stock}}</p>
           <button id="{{this.id}}" class="btn-delete">Eliminar</button>
+        {{/each}} 
           </div>
         </div>
-        {{/each}} 
           {{else}}
           <h3>No agregaste ningún producto, por favor hacé click en el botón para generar productos</h3>
           <a href="./realtimeproducts"><button>Formulario</button></a>
           {{/if}}
-     
+
+  <section class='pagination'>
+	<button id='prev-page-button'>Prev</button>
+	<span id='page-number'></span>
+	<button id='next-page-button'>Next</button>
+</section>

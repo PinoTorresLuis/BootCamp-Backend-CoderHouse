@@ -4,15 +4,10 @@
     list-style: none;
     box-sizing: border-box; 
 }
-  
 .container-products {
     display: grid;
-    grid-template-columns: repeat(12,1fr);
-    grid-template-rows: auto;
-    margin: 1em;
-    background-color: beige;
-    justify-content: center;
-    align-items: center;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
 }
 
 .container-products > .product {
@@ -24,9 +19,11 @@
     background-color: cadetblue;
     margin: 1em;
     padding: 1em;
-    height: auto;
-    width: auto;
-}
+    height: 100%;
+    width: 100%;
+
+    padding: 5px;
+}   
 
 .container-products > .product > .btn-delete {
     margin-top: 5px;
