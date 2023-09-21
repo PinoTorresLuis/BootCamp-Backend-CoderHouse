@@ -7,7 +7,7 @@
         </h1>
       </div>
       <div class="card-body">
-        <form id="singInForm" class="form" action="/session/login">
+        <form id="singInForm" class="form" action="api/session/login" method="POST">
         <div class="mb-3">  
         <label for="exampleFormControlInput1" class="form-label">Email address</label>
         <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" required>
@@ -19,7 +19,7 @@
         <button type="submit" class="btn btn-primary">Login</button>  
         </form>
         </div>
-        <p class="text-center">Dont you have an Account? <a href="/static/users" class="text-info">Sign Up</a></p>
+        <p class="text-center">Dont you have an Account? <a href="/static/register" class="text-info">Sign Up</a></p>
      </div>
     </div>
 </div>

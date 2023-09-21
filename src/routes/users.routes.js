@@ -14,10 +14,11 @@ const userRouter = Router();
 
 userRouter.post('/register', async(req,res)=>{
     try {
-        const {first_name,lastname,email,password,age,rol} = req.body
+        const {first_name,lastname,email,password,age} = req.body
 
         const resultado = await userModel.create({
-            first_name,lastname,email,password,age,rol})
+            first_name,lastname,email,password,age})
+        res.redirect('/static/products');
         res.status(200).send({respuesta:"Usuario creado correctamente",message:resultado})
     } catch (error) {
         res.status(400).send({error:'Error al crear el usuario:',error}) 

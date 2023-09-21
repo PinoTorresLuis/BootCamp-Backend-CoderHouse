@@ -35,14 +35,14 @@ routerHandleBars.get('/chat', async(req,res)=>{
 
 
 //Ruta del HandleBars para registrarse
-routerHandleBars.get('/users/register', async(req,res)=>{
+routerHandleBars.get('/register', async(req,res)=>{
     res.render("signUp",{
         titulo:"Register",
         rutaJS:"singup.js",
     })
 })
 
-routerHandleBars.get('/users/signin', async(req,res)=>{
+routerHandleBars.get('/signin', async(req,res)=>{
     res.render("signIn",{
         titulo:"SignIn",
         rutaJS:"signin.js",
@@ -58,6 +58,11 @@ routerHandleBars.get('/products', async (req, res) => {
 		rutaJS: 'products',
         products,
         info,
+	});
+});
+
+routerHandleBars.get('/admin', async (req, res) => {
+	res.render('admin', {
 	});
 });
 

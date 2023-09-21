@@ -43,7 +43,6 @@ const PORT = 4000; //Almaceno en el puerto que voy a trabajar
 const app = express(); //Inicio el servidor Express
 //Inicio mi servidor MongoDB
 //const fileStorage = FileStore(session); //Guardo la sesión express en FileStorae
-
 mongoConnect();
 
 //Server
