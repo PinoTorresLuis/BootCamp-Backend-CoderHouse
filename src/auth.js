@@ -1,4 +1,3 @@
-
 export default function auth (req,res,next){
     const {email} = req.body
     console.log(req.session.email);
