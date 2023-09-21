@@ -25,7 +25,7 @@ sessionRouter.post('/login',auth, async (req,res)=>{
     }
     }
     } catch (error) {
-        res.status(400).send({error:"No existe el usuario, por favor registrate"})
+        res.status(400).send({error:"No existe el usuario, por favor registrate"});
     }
 });
 

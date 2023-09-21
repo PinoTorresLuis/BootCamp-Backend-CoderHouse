@@ -1,5 +1,5 @@
 
-const login = document.getElementById("loginForm");
+/* const login = document.getElementById("loginForm");
 
 login.addEventListener('submit',(e)=>{
     e.preventDefault();
@@ -7,7 +7,7 @@ login.addEventListener('submit',(e)=>{
     const log = Object.fromEntries(formData);
     console.log("Datos a enviar:",log);
  
-    login.reset();
+   
 })
 
-
+ */

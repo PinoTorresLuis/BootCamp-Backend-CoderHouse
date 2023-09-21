@@ -38,5 +38,3 @@ form.addEventListener('submit', (e) => {
     containerProducts.append(div);
   })
 })
-
-

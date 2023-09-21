@@ -1,6 +1,7 @@
 import { Router } from "express";
 //import { ProductManager } from '../controllers/productManager.js';
 import { productModel } from "../models/products.models.js";
+import { userModel } from "../models/users.model.js";
 const routerHandleBars = Router();
 
 //const products = new ProductManager ('src/models/productos.json')
@@ -55,14 +56,20 @@ routerHandleBars.get('/products', async (req, res) => {
     const info = req.query.info;
 	res.render('home', {
 		rutaCSS: 'home.css',
-		rutaJS: 'products',
+		rutaJS: 'products.js',
         products,
-        info,
+        info
 	});
 });
 
 routerHandleBars.get('/admin', async (req, res) => {
+    const users =  await userModel.find().lean();
+    const info = req.query.info
 	res.render('admin', {
+        rutaCSS: "admin.css",
+        rutaJS:"admin.js",
+        users,
+        info
 	});
 });
 

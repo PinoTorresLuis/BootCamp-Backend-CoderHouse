@@ -1,10 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    box-sizing: border-box; 
-}
-.container-products{
+.container-users {
     display: grid;
     grid-template-columns: repeat(5,1fr);
     gap: 10px;
@@ -16,7 +10,7 @@
     text-align: center;
 }
 
-.container-products > .product {
+.container-users > .users { 
     display: column;
     padding: 10px;
     margin: 5px;
@@ -26,5 +20,19 @@
     width: 100%;
     background-color: aquamarine;
     border: 1px solid black;
-}   
 
+}
+
+.container-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+}
+.container-form > .title-form {
+    font-size: 1em;
+    text-align: center;
+}

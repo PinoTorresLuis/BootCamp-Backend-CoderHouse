@@ -1,28 +1,19 @@
-<h1>Bienvenidos al Home</h1>
+<h1>Bienvenidos a nuestro local</h1>
+
+<button type="button" class="btn btn-danger" id="btn-logout">Log Out</button>
 
       {{#if products}} 
        <h2>Nuestros productos</h2>   
-        <div class="container-product">
-          <div class="row">         
+        <div class="container-products">
       {{#each products}}
-          <p>Id: {{this.id}}</p>
+          <div class="product">         
           <p>Title: {{this.title}}</p>
           <p>Description: {{this.description}}</p>
           <p>Price: {{this.price}}</p>
           <p>thumbnail: {{this.thumbnail}}</p>
           <p>Code: {{this.code}}</p>
           <p>Stock: {{this.stock}}</p>
-          <button id="{{this.id}}" class="btn-delete">Eliminar</button>
-        {{/each}} 
           </div>
+        {{/each}} 
         </div>
-          {{else}}
-          <h3>No agregaste ningún producto, por favor hacé click en el botón para generar productos</h3>
-          <a href="./realtimeproducts"><button>Formulario</button></a>
-          {{/if}}
-
-  <section class='pagination'>
-	<button id='prev-page-button'>Prev</button>
-	<span id='page-number'></span>
-	<button id='next-page-button'>Next</button>
-</section>
+        {{/if}}

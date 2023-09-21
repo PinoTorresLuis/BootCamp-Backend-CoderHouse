@@ -19,9 +19,10 @@ import cartRouter from './routes/cart.routes.js';
 
      <---- Ruta de UsuarioDB ---->
 import userRouter from './routes/users.routes.js'; 
-     <---- Ruta de ProductManager ---->
+
+     <---- Ruta de ProductManager ---->*/
 import { ProductManager } from './controllers/productManager.js';
-const manager = new ProductManager ('src/models/productos.json');*/
+const manager = new ProductManager ('src/models/productos.json');
 
 //Ruta de HandleBars
 import routerHandleBars from './routes/views.routes.js';
@@ -37,7 +38,8 @@ import cookiesRouter from './routes/cookie.routes.js';
 import sessionRouter from './routes/sessions.routes.js';
 //Ruta de Usuarios
 import userRouter from './routes/users.routes.js';
-
+//ProductsModel
+import { productModel } from './models/products.models.js';
 
 const PORT = 4000; //Almaceno en el puerto que voy a trabajar
 const app = express(); //Inicio el servidor Express
@@ -105,20 +107,13 @@ io.on("connection", (socket)=>{
       io.emit('messageLogs', messages);
     })
 
-  /*  //Método para agregar el producto que proviene del Form
+   //Método para agregar el producto que proviene del Form
     socket.on ('newProduct', async(info) =>{
        await manager.addProduct(info)
        const products = await manager.getProducts()
      socket.emit ('products',products);
    }) 
 
-   socket.on('singup', async(data)=>{
-    const {first_name,lastname,age,email,password} = data;
-    await userModel.create({
-      first_name,lastname,age,email,password
-    })
-    console.log(data);
-   } ) */
 
    socket.on('load', async () => {
 		const data = await productModel.paginate({}, { limit: 5 });
