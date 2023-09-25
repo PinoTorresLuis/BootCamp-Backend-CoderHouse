@@ -1,26 +1,29 @@
+//MODULOS
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
-//Import del SV Mongo 
-import mongoConnect from './database.js';
+import session from 'express-session'; //Módulo para manejar las sesion previamente definido
+import passport from 'passport'; //Módulo para manejar los inicios de sesión con otras plataformas.Ej:Google.
+import MongoStore from 'connect-mongo'; //Módulo MongoStore para conectar la sesión con MONGODB
+import path from 'path'; //Se utiliza para definir las rutas
+import {__dirname} from './path.js'; //Se utiliza para definir la carpeta dentro de una ruta
+import { engine } from 'express-handlebars' //Módulo para utilizar Handlebars
+import { Server } from 'socket.io'; //Módulo para utilizar WebSocket
 
+
+import mongoConnect from './database.js'; //Import Función que realiza la conexión con el Servidor MONGODB 
+//Importo la dependencia de session-file-store
 //import FileStore  from "session-file-store";
+//Conecto session con lo que será el Filestore y guardo la sesión express en FileStorage 
+//const fileStorage = FileStore(session); 
 
-import MongoStore from 'connect-mongo';
-import path from 'path';
-import {__dirname} from './path.js';
-
-import { Server } from 'socket.io';
-import { engine } from 'express-handlebars'
 
 /*   <---- Importaciones de rutas que ya no se están usando ---->
 import routerProds from './routes/products.routes.js';
 import cartRouter from './routes/cart.routes.js';
-
      <---- Ruta de UsuarioDB ---->
 import userRouter from './routes/users.routes.js'; 
-
      <---- Ruta de ProductManager ---->*/
+
 import { ProductManager } from './controllers/productManager.js';
 const manager = new ProductManager ('src/models/productos.json');
 
@@ -40,11 +43,11 @@ import sessionRouter from './routes/sessions.routes.js';
 import userRouter from './routes/users.routes.js';
 //ProductsModel
 import { productModel } from './models/products.models.js';
+import { initializePassport } from './config/passport.js';
 
 const PORT = 4000; //Almaceno en el puerto que voy a trabajar
 const app = express(); //Inicio el servidor Express
 //Inicio mi servidor MongoDB
-//const fileStorage = FileStore(session); //Guardo la sesión express en FileStorae
 mongoConnect();
 
 //Server
@@ -61,20 +64,27 @@ app.engine('handlebars', engine())//Defino que voy a trabajar con handlebars
 app.set('view engine', 'handlebars');//Defino extensión
 app.set('views', path.resolve(__dirname, './views')) //Defino localización
 app.use(cookieParser(process.env.SIGNED_COOKIE)); //Cookie Parser
-//Configuración de la sesión de mi Usuario en mi APP
-app.use(session({
+/* Configuración de la sesión de mi Usuario en mi APP
+  FileStore pide 3 argumentos: 
+  1: TTL: Time To Live. Vida de la sesión.
+  2: Retries: Tiempo de veces que el servidor tratará de leer el archivo.
+  3: Path : Ruta donde vivirá la carpeta para almacenar la sessión que en este se va a generar de forma LOCAL
+*/
+app.use(session({ //Colocamos session como MIDDLEWARE
   store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URL,
+    mongoUrl: process.env.MONGO_URL, //Utilizo los .ENV
     mongoOptions: {useNewUrlParser: true,useUnifiedTopology:true},
     ttl:90//Va a durar segundos
   }),
- // store : new fileStorage({path: './sessions',ttl:10000, retries:1}),
+  //store : new fileStorage({path: './sessions',ttl:10000, retries:1}),
   secret:process.env.SESSION_SECRET,
-  resave:false,
-  saveUninitialized:false
+  resave:false, //Permite que la sesion permanezca activa en caso de estar inactivo. Con false muere la sesión
+  saveUninitialized:false //Permite guardar cualquier sesion aun cuando el objeto de sesion no tengo nada por contener
 }))
 
-
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session())
 
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
