@@ -69,7 +69,7 @@ export const initializePassport =()=>{
             done(null,user)
          })
     
-         //Acá hago el login consultando por los atributos enviados
+         //Acá abajo hago el login consultando por los atributos enviados
          //La estrategia se llama 'login'
          //usernameField va a ser email porque no tengo username en mi base de datos
          //Pido los datos dentro del async para después validarlos
@@ -88,9 +88,9 @@ export const initializePassport =()=>{
         if(user){
             done(null,false);
         }else { 
-            const userCreated = await userModel.findOne({
+            const userCreated = await userModel.create({
                 first_name: profile._json.name,
-                lastname : ' ', //Lastname no puedo mandarlo vacio ya que es requerido por lo tanto tengo que enviarle aunque sea una CADENA para que me lo tome como válido
+                lastname :' ', //Lastname no puedo mandarlo vacio ya que es requerido por lo tanto tengo que enviarle aunque sea una CADENA para que me lo tome como válido
                 email: profile._json.email,
                 age:18, //Edad por defecto,
                 password: 'password' //Creo una password sencilla para que después el usuario lo modifique
