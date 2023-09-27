@@ -1,6 +1,6 @@
 import { Router } from "express";
 //import { userModel } from "../models/users.model.js";
-import auth from "../auth.js";
+//import auth from "../auth.js";
 
 
 import passport from "passport";
@@ -30,7 +30,7 @@ const sessionRouter = Router();
         res.status(400).send({error:"No existe el usuario, por favor registrate"});
     }
 */
-sessionRouter.post('/login',auth, passport.authenticate('login'), async (req,res)=>{
+sessionRouter.post('/login', passport.authenticate('login'), async (req,res)=>{
    
     try {
         if(!req.user){
@@ -48,19 +48,19 @@ sessionRouter.post('/login',auth, passport.authenticate('login'), async (req,res
     }
 
 });
-
+//Esta es la ruta de creación de Usario
 sessionRouter.get('/github', passport.authenticate('github', {scope:['user:email']}), async(req,res)=>{
     res.status(200).send({mensaje:'Usuario creado'});
 
 });
-
+//Ruta de inicio de sesión
 sessionRouter.get('/githubSession', passport.authenticate('github'), async(req,res)=>{
     req.session.user = req.user;
     res.status(200).send({mensaje:'sesión creada'})
 })
 
 sessionRouter.get('/logout', (req,res)=>{
-    if(req.session.login){
+    if(req.session){ //Si existe la sesión, la borramos.
         req.session.destroy();
         res.redirect("/static/signin");
     }

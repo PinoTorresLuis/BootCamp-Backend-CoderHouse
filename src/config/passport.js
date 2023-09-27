@@ -19,7 +19,7 @@ export const initializePassport =()=>{
         const {first_name,lastname,email,age} = req.body
         
         try {
-            const user = await userModel.findOne({email:username})
+            const user = await userModel.findOne({email:email})
             if (user){
                 //es como si fuese un return de un callback
                 return done(null,false);//Acá el null significa que si ya existe no lo puedo volver a crear
@@ -83,11 +83,9 @@ export const initializePassport =()=>{
         try {
             console.log("Este es tu accesToken:", accessToken);
             console.log("Este es tu refreshToken:",refreshToken);
-        //esto es para registrarme:
-        const user = await userModel.findOne({email: profile._json.email})//como el email es un atributo único es la única forma de garantizarme si ya existe o no 
-        if(user){
-            done(null,false);
-        }else { 
+        //esto es para encontrar el usuario:
+        const user = await userModel.findOne({email:profile._json.email})//como el email es un atributo único es la única forma de garantizarme si ya existe o no 
+        if(!user){ //Si no existe el usuario, lo creo
             const userCreated = await userModel.create({
                 first_name: profile._json.name,
                 lastname :' ', //Lastname no puedo mandarlo vacio ya que es requerido por lo tanto tengo que enviarle aunque sea una CADENA para que me lo tome como válido
@@ -95,12 +93,14 @@ export const initializePassport =()=>{
                 age:18, //Edad por defecto,
                 password: 'password' //Creo una password sencilla para que después el usuario lo modifique
             })
-            done(null,userCreated);
+          done(null,userCreated);
+        }else { 
+            done(null,user) //Si existe, lo retorno
         }     
         } catch (error) {
             done(error)
         }
        
-    }))
+    })) 
 
 }
