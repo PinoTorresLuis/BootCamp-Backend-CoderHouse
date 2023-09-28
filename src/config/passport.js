@@ -1,17 +1,42 @@
 import local from 'passport' //Estrategia 
 import passport from 'passport' //Manejador de las estrategias
 import GithubStrategy from 'passport-github2'; //Estrategia de GitHub
+import jwt from 'passport-jwt';
+
 import { createHash, validatePassword } from '../utils/bcrypt.js' ; //Los voy a implementar dentro de la estrategia
 import { userModel } from '../models/users.model.js';
 
 //Defino la estrategia a utilizar. Es la configuración de mi estrategia
 const localStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt //Extractor de los headers de la consulta
 
 //Función de mi estrategia
 export const initializePassport =()=>{
+    const cookieExtractor = req =>{
+        console.log(req.cookies)//Si me devuelve un {} no hay cookies en mi app. Es algo totalmente distinto a que no exista mi cookie
+        //Si existen cookies, consulte por mi cookie y sino asigno null.
+        //Acá lo que hacemos es consultar si existe la cookie, si es así la devuelve sino devuelve un objeto vacio.
+        const token = req.cookies ? req.cookies.jwtCookie: {} //Consulto el Token llamado jwtCookie
+        console.log(token); 
+        //Esto es para extraer la cookie especifica del navegador e implementarla
+        return token
+    }
+    passport.use('jwt', new JWTStrategy({
+        //Primero consulto de dónde proviene la cookie.
+        //jwtFromRequest: es una propiedad. Y en fromExtractor le digo de dónde voy a extraer la cookie y le paso la función que creamos arriba
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: process.env.JWT_SECRET 
+    }, async(jwt_payload,done)=>{ //Payload es la forma en la que puedo implementar los datos. Tiene que ver con el resultado de mi consulta
+        try {
+            console.log(jwt_payload);
+            return done(null, jwt_payload)//Retorno el contenido del Token Cokiee 
+        } catch (error) {
+            return done(error);
+        }
+    }))
     //done es como si fuese un res.status(),el callback de respuesta. 
     //Acá defino qué y en qué ruta voy a utilizar mi estrategia
-    
     passport.use('register', new localStrategy(//defino como voy a  registrar a mis usuarios con el new localstrategy
     //con passreqtolocal se devuelve el código como true y lo re defino con el usernamefield:"email" que es lo que nosotros tenemos en nuestra base de datos así no tengo que crear un nuevo campo 
     {passReqToCallBack:true, usernameField:"email"}, async(req,username,password,done) =>{
@@ -61,7 +86,7 @@ export const initializePassport =()=>{
        //Inicializar la sesión del usuario con serializeUser
         //En los parametros me pide un usuario y done en el caso que se devuelva algo
         passport.serializeUser((user,done)=>{
-            done(null,user._id); //Est es para generar los id (Respeto el nombre id)
+            done(null,user.user._id); //Esto es para dar un código más complejo que me permite consultar si existe o no existe el doble usuario. Si yo entro con Login normal es user.id. Si entro con JWT es user.user. Esto sería consultar si existe un objeto que agarra al otro.
          })
          //Eliminar la sesión del usuario con DESerializeUser
          passport.deserializeUser(async(id,done)=>{

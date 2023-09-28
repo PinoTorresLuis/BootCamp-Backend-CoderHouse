@@ -9,23 +9,10 @@ import {__dirname} from './path.js'; //Se utiliza para definir la carpeta dentro
 import { engine } from 'express-handlebars' //Módulo para utilizar Handlebars
 import { Server } from 'socket.io'; //Módulo para utilizar WebSocket
 
-
+//FUNCIONES IMPORTADAS
+import { productModel } from './models/products.models.js'; //ProductsModel para crear Productos
+import { initializePassport } from './config/passport.js'; //Import función InitializePassport 
 import mongoConnect from './database.js'; //Import Función que realiza la conexión con el Servidor MONGODB 
-//Importo la dependencia de session-file-store
-//import FileStore  from "session-file-store";
-//Conecto session con lo que será el Filestore y guardo la sesión express en FileStorage 
-//const fileStorage = FileStore(session); 
-
-
-/*   <---- Importaciones de rutas que ya no se están usando ---->
-import routerProds from './routes/products.routes.js';
-import cartRouter from './routes/cart.routes.js';
-     <---- Ruta de UsuarioDB ---->
-import userRouter from './routes/users.routes.js'; 
-     <---- Ruta de ProductManager ---->*/
-
-import { ProductManager } from './controllers/productManager.js';
-const manager = new ProductManager ('src/models/productos.json');
 
 //Ruta de HandleBars
 import routerHandleBars from './routes/views.routes.js';
@@ -41,12 +28,11 @@ import cookiesRouter from './routes/cookie.routes.js';
 import sessionRouter from './routes/sessions.routes.js';
 //Ruta de Usuarios
 import userRouter from './routes/users.routes.js';
-//ProductsModel
-import { productModel } from './models/products.models.js';
-import { initializePassport } from './config/passport.js';
+
 
 const PORT = 4000; //Almaceno en el puerto que voy a trabajar
 const app = express(); //Inicio el servidor Express
+
 //Inicio mi servidor MongoDB
 mongoConnect();
 
@@ -63,7 +49,7 @@ app.use(express.urlencoded({extended:true})); //Se utiliza para optimizar la bú
 app.engine('handlebars', engine())//Defino que voy a trabajar con handlebars
 app.set('view engine', 'handlebars');//Defino extensión
 app.set('views', path.resolve(__dirname, './views')) //Defino localización
-app.use(cookieParser(process.env.SIGNED_COOKIE)); //Cookie Parser
+app.use(cookieParser(process.env.JWT_SECRET)); //Cookie Parser
 /* Configuración de la sesión de mi Usuario en mi APP
   FileStore pide 3 argumentos: 
   1: TTL: Time To Live. Vida de la sesión.
@@ -82,17 +68,12 @@ app.use(session({ //Colocamos session como MIDDLEWARE
   saveUninitialized:false //Permite guardar cualquier sesion aun cuando el objeto de sesion no tengo nada por contener
 }))
 
-initializePassport();
+initializePassport(); //Exporto la función que está en passport.js
 app.use(passport.initialize());
-app.use(passport.session())
+app.use(passport.session());
 
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
-
-//Rutas que ya no se están usando
-//app.use ('/api/products', routerProds);
-//app.use('/api/carts/',cartRouter);
-//app.use('/api/users', userRouter);
 
 app.use('/static/', routerHandleBars);
 app.use('/api/products', productRouter);
@@ -116,27 +97,9 @@ io.on("connection", (socket)=>{
       const messages = await messagesModel.find();
       io.emit('messageLogs', messages);
     })
-
-   //Método para agregar el producto que proviene del Form
-    socket.on ('newProduct', async(info) =>{
-       await manager.addProduct(info)
-       const products = await manager.getProducts()
-     socket.emit ('products',products);
-   }) 
-
-
+    
    socket.on('load', async () => {
 		const data = await productModel.paginate({}, { limit: 5 });
-		socket.emit('products', data);
-	});
-
-	socket.on('previousPage', async page => {
-		const data = await productModel.paginate({}, { limit: 5, page: page });
-		socket.emit('products', data);
-	});
-
-	socket.on('nextPage', async page => {
-		const data = await productModel.paginate({}, { limit: 5, page: page });
 		socket.emit('products', data);
 	});
 })
