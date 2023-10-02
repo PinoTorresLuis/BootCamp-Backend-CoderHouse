@@ -13,22 +13,10 @@ import { Server } from 'socket.io'; //Módulo para utilizar WebSocket
 import { productModel } from './models/products.models.js'; //ProductsModel para crear Productos
 import { initializePassport } from './config/passport.js'; //Import función InitializePassport 
 import mongoConnect from './database.js'; //Import Función que realiza la conexión con el Servidor MONGODB 
+import router from './routes/index.routes.js'; //Funciones de las rutas de las páginas
 
-//Ruta de HandleBars
-import routerHandleBars from './routes/views.routes.js';
-//Ruta de ProductsDB
-import productRouter from './routes/productsdb.routes.js';
-//Ruta de CartProductsDB
-import cartRouterDB from './routes/cartdb.routes.js';
-//Ruta de MessagesDB
+//Ruta de MessagesDB con WESBSOCKET
 import { messagesModel } from './models/messages.models.js';
-//Ruta de Cookies
-import cookiesRouter from './routes/cookie.routes.js';
-//Ruta de Sesiones
-import sessionRouter from './routes/sessions.routes.js';
-//Ruta de Usuarios
-import userRouter from './routes/users.routes.js';
-
 
 const PORT = 4000; //Almaceno en el puerto que voy a trabajar
 const app = express(); //Inicio el servidor Express
@@ -75,12 +63,7 @@ app.use(passport.session());
 //Routes
 app.use('/static', express.static(path.join(__dirname,'/public')));
 
-app.use('/static/', routerHandleBars);
-app.use('/api/products', productRouter);
-app.use('/api/carts',cartRouterDB);
-app.use('/cookies', cookiesRouter);
-app.use('/api/session', sessionRouter);
-app.use('/users', userRouter);
+app.use('/', router);
 app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
     res.send("Error 404: Page not found");
 })
