@@ -1,5 +1,5 @@
-import local from 'passport' //Estrategia 
-import passport from 'passport' //Manejador de las estrategias
+import local from 'passport-local'; //Estrategia 
+import passport from 'passport'; //Manejador de las estrategias
 import GithubStrategy from 'passport-github2'; //Estrategia de GitHub
 import jwt from 'passport-jwt';
 
@@ -39,7 +39,7 @@ export const initializePassport =()=>{
     //Acá defino qué y en qué ruta voy a utilizar mi estrategia
     passport.use('register', new localStrategy(//defino como voy a  registrar a mis usuarios con el new localstrategy
     //con passreqtolocal se devuelve el código como true y lo re defino con el usernamefield:"email" que es lo que nosotros tenemos en nuestra base de datos así no tengo que crear un nuevo campo 
-    {passReqToCallBack:true, usernameField:"email"}, async(req,username,password,done) =>{
+    {passReqToCallback:true, usernameField:"email"}, async(req,username,password,done) =>{
             //Defino como voy a registrar un usuario
         const {first_name,lastname,email,age} = req.body
         

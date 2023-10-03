@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { generateToken } from "../utils/jwt.js";
 //import auth from "../auth.js";
 
 const sessionRouter = Router();
@@ -16,6 +17,10 @@ sessionRouter.post('/login', passport.authenticate('login'), async (req,res)=>{
             age:req.user.age,
             email:req.user.email
         }
+        const token = generateToken(req.user)
+        req.cookies('jwtCookie',token,{
+            maxAge: 43000000
+        })
         res.status(200).send({payload:req.user})
     } catch (error) {
         res.status(500).send({error:"Error al iniciar sesión", error})
@@ -50,7 +55,7 @@ sessionRouter.get('/logout', (req,res)=>{
         req.session.destroy();
         res.redirect("/static/signin");
     }
-   
+    res.clearCookie('jwtCookie') //Elimino la Cookie
 });
 
 export default sessionRouter;

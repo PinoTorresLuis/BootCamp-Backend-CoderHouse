@@ -27,6 +27,10 @@ const userSchema = new Schema({
     age:{
         required:true,
         type:Number,
+    },
+    cart: {
+        type: Schema.Types.ObjectId, //ID autogenerando desde MongoDB
+        ref: 'carts'
     }
 })
 
