@@ -16,3 +16,15 @@ export const passportError = (strategy)=>{
         })(req,res,next); //Esto es porque es un middleware porque va a estar entre mi ruta y mi aplicación. Retorno lo que sería la aplicación. No está como middweare ya implementando, sino que lo implemento a traves de una función passportError y el valor que ingrese va a estar al nivel del Middware
     }
 }
+//Ingreso un rol y verifico si mi usuario lo cumple.Ej: Ingreso admin y compruebo si existe
+export const authorization = (rol)=>{
+    return async (req,res,next)=>{
+        //Se vuelve a consultar si el usuario existe porque el Token puede expirar, el usuario borrar el historial o algún problema técnico con la pc
+        if(!req.user){//Si no existe el usuario
+            return res.status(401).send({error:"User no autorizado"});
+        }//Este código es porque la sesión se repite dos veces, primero se crea la sesión y después el objeto interno por eso el [0]
+        if(req.user.user.rol !=rol){//Si mi usuario tiene un rolo distinto al ingresado como paramétro
+            return res.status(403).send({error:'User no tiene los privilegios necesarios'});
+        }
+    }
+}

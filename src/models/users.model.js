@@ -28,7 +28,7 @@ const userSchema = new Schema({
         required:true,
         type:Number,
     },
-    cart: {
+    cart: { //Tengo que crear el carrito cuando creo el usuario
         type: Schema.Types.ObjectId, //ID autogenerando desde MongoDB
         ref: 'carts'
     }

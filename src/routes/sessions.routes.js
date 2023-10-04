@@ -2,7 +2,7 @@ import { Router } from "express";
 import passport from "passport";
 import { generateToken } from "../utils/jwt.js";
 //import auth from "../auth.js";
-
+import { passportError, authorization } from "../utils/messageErrors.js";
 const sessionRouter = Router();
 
 sessionRouter.post('/login', passport.authenticate('login'), async (req,res)=>{
@@ -18,8 +18,8 @@ sessionRouter.post('/login', passport.authenticate('login'), async (req,res)=>{
             email:req.user.email
         }
         const token = generateToken(req.user)
-        req.cookies('jwtCookie',token,{
-            maxAge: 43000000
+        res.cookie('jwtCookie',token,{
+            maxAge: 43200000
         })
         res.status(200).send({payload:req.user})
     } catch (error) {
@@ -50,12 +50,17 @@ sessionRouter.get('/testJWT', passport.authenticate('jwt', {session:false}),asyn
     }
 })
 
+sessionRouter.get('/current', passportError('jwt'), authorization('user'),(req,res)=>{
+    res.send(req.user); 
+}) //Si quiero mandar varias opciones tengo que hacer un array ['User','UserPremium]
+
 sessionRouter.get('/logout', (req,res)=>{
     if(req.session){ //Si existe la sesión, la borramos.
         req.session.destroy();
-        res.redirect("/static/signin");
+       // res.redirect("/static/signin");
     }
     res.clearCookie('jwtCookie') //Elimino la Cookie
+    res.status(200).send({resultado:"Logout Exitoso"})
 });
 
 export default sessionRouter;

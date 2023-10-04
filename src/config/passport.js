@@ -1,8 +1,8 @@
+//Passport lo que hace es descriptar el Token y revisa si este tiene la misma contraseña que ingresó. Si es sí el Token se valida, sino el Token no funciona.
 import local from 'passport-local'; //Estrategia 
 import passport from 'passport'; //Manejador de las estrategias
 import GithubStrategy from 'passport-github2'; //Estrategia de GitHub
 import jwt from 'passport-jwt';
-
 import { createHash, validatePassword } from '../utils/bcrypt.js' ; //Los voy a implementar dentro de la estrategia
 import { userModel } from '../models/users.model.js';
 
@@ -39,6 +39,7 @@ export const initializePassport =()=>{
     //Acá defino qué y en qué ruta voy a utilizar mi estrategia
     passport.use('register', new localStrategy(//defino como voy a  registrar a mis usuarios con el new localstrategy
     //con passreqtolocal se devuelve el código como true y lo re defino con el usernamefield:"email" que es lo que nosotros tenemos en nuestra base de datos así no tengo que crear un nuevo campo 
+
     {passReqToCallback:true, usernameField:"email"}, async(req,username,password,done) =>{
             //Defino como voy a registrar un usuario
         const {first_name,lastname,email,age} = req.body
@@ -67,12 +68,12 @@ export const initializePassport =()=>{
      
      passport.use('login', new localStrategy({usernameField:'email'}, async(username,password,done)=>{
         try {
-            const user = await userModel.findOne({email:email})
+            const user = await userModel.findOne({email:username})
           //Consulto por un Login. Si éste no existe, retorno null y false
             if(!user){
                 return done(null,false);
             }//SI existe el usuario, compruebo que la contraseña sea valida
-            if(validatePassword(password,user.password)){
+            if(validatePassword(password, user.password)){
                 return done(null,user)//Usuario y contraseña válidos
             }
             //Si el usuario existe pero la contraseña no lo es, retorno false
@@ -86,7 +87,8 @@ export const initializePassport =()=>{
        //Inicializar la sesión del usuario con serializeUser
         //En los parametros me pide un usuario y done en el caso que se devuelva algo
         passport.serializeUser((user,done)=>{
-            done(null,user.user._id); //Esto es para dar un código más complejo que me permite consultar si existe o no existe el doble usuario. Si yo entro con Login normal es user.id. Si entro con JWT es user.user. Esto sería consultar si existe un objeto que agarra al otro.
+            //Antes era user.user._id
+            done(null,user._id); //Esto es para dar un código más complejo que me permite consultar si existe o no existe el doble usuario. Si yo entro con Login normal es user.id. Si entro con JWT es user.user. Esto sería consultar si existe un objeto que agarra al otro. 
          })
          //Eliminar la sesión del usuario con DESerializeUser
          passport.deserializeUser(async(id,done)=>{
