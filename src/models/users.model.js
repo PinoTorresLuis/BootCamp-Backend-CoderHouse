@@ -34,4 +34,15 @@ const userSchema = new Schema({
     }
 })
 
+userSchema.pre('save', async function (next) {
+
+    try {
+        const newCart = await cartModel.create({})
+        this.cart = newCart._id
+    } catch (error) {
+        next(error)
+    }
+
+})
+
 export const userModel = model('users',userSchema)//Defino mi modelo con un nombre y el Schema

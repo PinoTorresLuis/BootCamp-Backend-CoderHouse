@@ -26,5 +26,6 @@ export const authorization = (rol)=>{
         if(req.user.user.rol !=rol){//Si mi usuario tiene un rolo distinto al ingresado como paramétro
             return res.status(403).send({error:'User no tiene los privilegios necesarios'});
         }
+        next();
     }
 }
