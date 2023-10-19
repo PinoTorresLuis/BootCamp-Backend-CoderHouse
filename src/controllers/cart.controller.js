@@ -82,6 +82,7 @@ export const updateProducts = async (req, res) => {
 	}
 };
 
+//Ruta para buscar por CID y PID como indentificares únicos e aumentar la cantidad 
 export const updateQuantity = async (req, res) => {
 	const { cid, pid } = req.params; 
 	const { quantity } = req.body;
