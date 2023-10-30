@@ -67,7 +67,7 @@ productRouter.post('/', passportError('jwt'), authorization('Admin'), postProduc
 }*/
 )
 //Ruta para actualizar un producto buscado por su ID
-productRouter.put('/:id', putProducts /* async(req,res)=>{
+productRouter.put('/:id', passportError('jwt'), authorization('Admin'),putProducts /* async(req,res)=>{
     const {id} = req.params
     const {title,description,stock,code,category,price,status} = req.body
     try {
@@ -85,7 +85,7 @@ productRouter.put('/:id', putProducts /* async(req,res)=>{
 } */)
 
 //Ruta para borrar un producto según su ID
-productRouter.delete('/:id', deleteProduct  /*  async(req,res)=>{
+productRouter.delete('/:id', passportError('jwt'), authorization('Admin'),deleteProduct  /*  async(req,res)=>{
     const {id} = req.params
     try {
         const succes = await productModel.findByIdAndDelete(id); //Utilizamos el método FindByIDAndUpdate que mismo mongoDB lo provee.

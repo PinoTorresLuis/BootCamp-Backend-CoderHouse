@@ -1,5 +1,17 @@
 import { generateToken } from "../utils/jwt.js";
 
+//Ruta para registrarse
+export const userRegister = async(req,res)=>{
+    try {
+        if(!req.user){
+            res.status(400).send({mensaje:"Usuario ya creado"});
+        }
+        return res.status(200).send({mensaje:"Usuario creado correctamente"});
+    } catch (error) {
+        res.status(500).send({error:"Error al crear usuario", error});
+    }
+}
+
 //Ruta para loguearse a mi app
 export const sessionLogin = async(req,res)=>{
     try {

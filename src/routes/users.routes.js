@@ -1,4 +1,4 @@
-import { Router } from "express";
+/*import { Router } from "express";
 //import { userModel } from "../models/users.model.js";
 //import { createHash } from "../utils/bcrypt.js";
 import passport from "passport";
@@ -6,7 +6,7 @@ import { userRegister } from "../controllers/user.controller.js";
 
 const userRouter = Router();
 
-/* userRouter.get('/', async(req,res)=>{
+ userRouter.get('/', async(req,res)=>{
     try {
         const users = await userModel.find()
         res.status(200).send(users)
@@ -33,8 +33,7 @@ const userRouter = Router();
     } catch (error) {
         res.status(400).send({error:'Error al crear el usuario:',error}) 
     }
+    userRouter.post('/register', passport.authenticate('register'),userRegister);
+    
+    export default userRouter;
 */
-
-userRouter.post('/register', passport.authenticate('register'),userRegister);
-
-export default userRouter;
