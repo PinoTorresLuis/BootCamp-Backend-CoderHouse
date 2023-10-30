@@ -1,5 +1,6 @@
 import { cartModel } from "../models/cart.models.js";
 import { productModel } from "../models/products.models.js";
+import { ticketModel } from "../models/ticket.model.js";
 
 //Ruta que se utiliza para traer todos los cart que existan
 export const findCarts =  async(req,res)=>{
@@ -149,3 +150,29 @@ export const deleteProductCart = async (req, res) => {
 		res.status(400).send({ error: `Error al eliminar producto: ${error}` });
 	}
 };
+
+//Ruta para finalizar compra
+export const FinalizarCompra = async(req,res)=>{
+	const {cid, pid} = req.params;
+	try {
+
+		const cartID = await cartModel.findById(cid);
+		if(cartID){
+			res.status(200).send({mensaje:'Carrito encontrado', cartID});
+		}
+
+		const cartUser = req.user.user.email;
+		if(!cartUser){
+			res.status(400).send({mensaje:"Por favor primero tiene que loguearse"});
+			console.log(cartUser);
+		}
+		const cart = req.user.user.cart;
+		if(!cart || cart.products.length == 0 ){
+			res.status(400).send({mensaje:"El carrito está vacio o no existe"})
+			console.log(req.user.user.cart);
+		}
+		
+	} catch (error) {
+		res.status(404).send({resultado:"No se pudo finalizar la compra correctamente", error});
+	}
+}

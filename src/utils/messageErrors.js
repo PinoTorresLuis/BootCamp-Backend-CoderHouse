@@ -13,7 +13,7 @@ export const passportError = (strategy)=>{
             }
             req.user = user;
             next();
-        })(req,res,next); //Esto es porque es un middleware porque va a estar entre mi ruta y mi aplicación. Retorno lo que sería la aplicación. No está como middweare ya implementando, sino que lo implemento a traves de una función passportError y el valor que ingrese va a estar al nivel del Middware
+        })(req,res,next); //Esto es porque es un middleware que va a estar entre mi ruta y mi aplicación. Retorno lo que sería la aplicación. No está como middweare ya implementando, sino que lo implemento a traves de una función passportError y el valor que ingrese va a estar al nivel del Middware
     }
 }
 //Ingreso un rol y verifico si mi usuario lo cumple.Ej: Ingreso admin y compruebo si existe

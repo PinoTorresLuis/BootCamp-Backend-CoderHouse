@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const ticketSchema = new Schema({
 
-
-    quantity:Number,
+  //  quantity:Number,
     code:{
         type:String,
         unique:true,
@@ -15,7 +14,7 @@ const ticketSchema = new Schema({
         required:true,
         default:Date.now
     },
-    amount:{
+  amount:{
         type:Number,
         required:true
     },
@@ -23,10 +22,7 @@ const ticketSchema = new Schema({
         type:String,
         required:true
     },
-    cart: {
-        type:Schema.Types.ObjectId,
-        ref:'carts'
-    }
+
 });
 
 export const ticketModel = model('ticket', ticketSchema );

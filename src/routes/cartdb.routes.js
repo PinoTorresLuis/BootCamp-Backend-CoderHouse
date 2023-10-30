@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { cartQuantity, createCart, deleteCart, deleteProductCart, findCart, findCarts, updateProducts, updateQuantity } from "../controllers/cart.controller.js";
+import { FinalizarCompra, cartQuantity, createCart, deleteCart, deleteProductCart, findCart, findCarts, updateProducts, updateQuantity } from "../controllers/cart.controller.js";
 
 const cartRouterDB = Router(); //Almaceno Router en una variable para poder utilizar las rutas
 
@@ -27,5 +27,8 @@ cartRouterDB.delete('/:cid',deleteCart);
 
 //Ruta para borrar dentro de un carrito el producto en especifico
 cartRouterDB.delete('/:cid/products/:pid', deleteProductCart);
+
+
+cartRouterDB.post('/:cid/purchase', FinalizarCompra);
 
 export default cartRouterDB
