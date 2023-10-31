@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { FinalizarCompra, cartQuantity, createCart, deleteCart, deleteProductCart, findCart, findCarts, updateProducts, updateQuantity } from "../controllers/cart.controller.js";
+import { FinalizarCompra, addProduct, createCart, deleteCart, deleteProductCart, findCart, findCarts, updateProducts, updateQuantity } from "../controllers/cart.controller.js";
 
 const cartRouterDB = Router(); //Almaceno Router en una variable para poder utilizar las rutas
 
@@ -14,7 +14,7 @@ cartRouterDB.get('/:cid', findCart);
 cartRouterDB.post('/', createCart);
 
 //Ruta que se utiliza para aumentar la cantidad
-cartRouterDB.post('/:cid/products/:pid', cartQuantity);
+cartRouterDB.post('/:cid/products/:pid', addProduct);
 
 //Ruta para buscar por cid la cual sirve para acumular productos repetidos por su cantidad o si no existe, agregarlo
 cartRouterDB.put('/:cid', updateProducts);

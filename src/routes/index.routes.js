@@ -7,12 +7,15 @@ import productRouter from './productsdb.routes.js';
 import cartRouterDB from './cartdb.routes.js';
 //Ruta de SessionesDB
 import sessionRouter from "./sessions.routes.js";
+//Ruta de Tickets
+import routerTicket from './ticket.routes.js';
+
 
 
 const router = Router();
 
 router.use('/api/products', productRouter);
-//router.use('/api/users', userRouter);
+router.use('/api/ticket', routerTicket);
 router.use('/api/carts',cartRouterDB);
 router.use('/api/session', sessionRouter);
 router.use('/static',routerHandleBars);

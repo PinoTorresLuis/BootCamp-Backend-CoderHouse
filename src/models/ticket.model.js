@@ -1,13 +1,11 @@
 import { Schema,model } from "mongoose";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const ticketSchema = new Schema({
-
-  //  quantity:Number,
     code:{
         type:String,
-        unique:true,
-        default:uuidv4,
+        code: uuidv4(),
+        required:true,
     },
     purchaseDateTime:{
         type:Date,
@@ -24,5 +22,6 @@ const ticketSchema = new Schema({
     },
 
 });
+
 
 export const ticketModel = model('ticket', ticketSchema );

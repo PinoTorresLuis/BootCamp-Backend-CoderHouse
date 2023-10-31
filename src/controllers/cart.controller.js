@@ -1,6 +1,7 @@
 import { cartModel } from "../models/cart.models.js";
 import { productModel } from "../models/products.models.js";
 import { ticketModel } from "../models/ticket.model.js";
+import { userModel } from "../models/users.model.js";
 
 //Ruta que se utiliza para traer todos los cart que existan
 export const findCarts =  async(req,res)=>{
@@ -27,8 +28,8 @@ export const createCart = async(req,res)=>{
         res.status(401).send({resultado:"Error al crear el carrito", error});
     }
 }
-//Ruta que se utiliza para aumentar la cantidad
-export const cartQuantity = async(req,res)=>{
+//Ruta que se utiliza para agregar producto
+export const addProduct = async(req,res)=>{
     const {cid,pid} = req.params;
     try {
         //Se busca el cid en Cart y pid en Product 
@@ -39,6 +40,12 @@ export const cartQuantity = async(req,res)=>{
             res.status(404).send({resultado:"Producto no encontrado", message:product});
             return false
         }
+
+		if(product.stock === 0){
+			console.log(product.stock);
+			res.status(400).send({error:"No hay stock"})
+		}
+
 		//En el caso de que exista ingreso al carrito -> products -> y busco el id
         if(cart){
             const productExist = cart.products.find(prod => prod.id_prod == pid);
@@ -59,7 +66,7 @@ export const cartQuantity = async(req,res)=>{
 export const updateProducts = async (req, res) => {
 	const { cid } = req.params;
 	const updateProducts = req.body; 
-
+	console.log("Update", updateProducts);
 	try {
 		const cart = await cartModel.findById(cid);
 		if(!cart){
@@ -87,6 +94,11 @@ export const updateProducts = async (req, res) => {
 export const updateQuantity = async (req, res) => {
 	const { cid, pid } = req.params; 
 	const { quantity } = req.body;
+	const product = await productModel.findById(pid);
+
+	if(product.stock < productExists.quantity + quantity) {
+		res.status(400).send({error:"No hay stock suficiente"})
+	}
 
 	try {
 		const cart = await cartModel.findById(cid);
@@ -151,28 +163,39 @@ export const deleteProductCart = async (req, res) => {
 	}
 };
 
+
 //Ruta para finalizar compra
 export const FinalizarCompra = async(req,res)=>{
-	const {cid, pid} = req.params;
+	const { cid } = req.params;
+
 	try {
+		const cart = await cartModel.findById(cid);
+		const products = await productModel.find();
 
-		const cartID = await cartModel.findById(cid);
-		if(cartID){
-			res.status(200).send({mensaje:'Carrito encontrado', cartID});
-		}
+		if (cart) {
+			const user = await userModel.find({ cart: cart._id });
+			const email = user.email;
+			let amount = 0;
+			const purchaseItems = [];
+			cart.products.forEach(async item => {
+				const product = products.find(prod => prod._id == item.id_prod.toString());
+				if (product.stock >= item.quantity) {
+					amount += product.price * item.quantity;
+					product.stock -= item.quantity;
+					await product.save();
+					purchaseItems.push(product.title);
+				}
+				//ticket?info=${amount}
+			});
+			console.log(purchaseItems);
+			await cartModel.findByIdAndUpdate(cid, { products: [] });
+			res.status(200).send({mensaje:"ticket creado correctamente y enviamos el ticket a", email})
 
-		const cartUser = req.user.user.email;
-		if(!cartUser){
-			res.status(400).send({mensaje:"Por favor primero tiene que loguearse"});
-			console.log(cartUser);
+			await ticketModel.create({amount:amount,email:email,});
+		} else {
+			res.status(404).send({ resultado: 'Not Found', message: cart });
 		}
-		const cart = req.user.user.cart;
-		if(!cart || cart.products.length == 0 ){
-			res.status(400).send({mensaje:"El carrito está vacio o no existe"})
-			console.log(req.user.user.cart);
-		}
-		
 	} catch (error) {
-		res.status(404).send({resultado:"No se pudo finalizar la compra correctamente", error});
+		res.status(400).send({ error: `Error al consultar carrito: ${error}` });
 	}
 }
