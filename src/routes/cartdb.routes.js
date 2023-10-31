@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { FinalizarCompra, addProduct, createCart, deleteCart, deleteProductCart, findCart, findCarts, updateProducts, updateQuantity } from "../controllers/cart.controller.js";
+import {addProduct, createCart, deleteCart, deleteProductCart, findCart, findCarts, purchaseCart, updateProducts, updateQuantity } from "../controllers/cart.controller.js";
 
 const cartRouterDB = Router(); //Almaceno Router en una variable para poder utilizar las rutas
 
@@ -29,6 +29,6 @@ cartRouterDB.delete('/:cid',deleteCart);
 cartRouterDB.delete('/:cid/products/:pid', deleteProductCart);
 
 
-cartRouterDB.post('/:cid/purchase', FinalizarCompra);
+cartRouterDB.post('/:cid/purchase', purchaseCart);
 
 export default cartRouterDB
