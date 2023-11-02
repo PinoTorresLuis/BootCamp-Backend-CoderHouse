@@ -165,17 +165,16 @@ export const deleteProductCart = async (req, res) => {
 
 
 //Ruta para finalizar compra
-export const FinalizarCompra = async(req,res)=>{
+export const purchaseCart = async(req,res)=>{
 	const { cid } = req.params;
 
 	try {
 		const cart = await cartModel.findById(cid);
 		const products = await productModel.find();
-
+		let amount = 0;
 		if (cart) {
 			const user = await userModel.find({ cart: cart._id });
-			const email = user.email;
-			let amount = 0;
+	
 			const purchaseItems = [];
 			cart.products.forEach(async item => {
 				const product = products.find(prod => prod._id == item.id_prod.toString());
@@ -183,15 +182,22 @@ export const FinalizarCompra = async(req,res)=>{
 					amount += product.price * item.quantity;
 					product.stock -= item.quantity;
 					await product.save();
-					purchaseItems.push(product.title);
+					purchaseItems.push(product);
 				}
-				//ticket?info=${amount}
+				
 			});
-			console.log(purchaseItems);
+			  //Ticket de compra
+			  const ticketData = {
+				amount: amount,
+				date: new Date(),
+			  };
+		
+			const ticket = await ticketModel.create(ticketData);
+			//Limpiar el carrito
 			await cartModel.findByIdAndUpdate(cid, { products: [] });
-			res.status(200).send({mensaje:"ticket creado correctamente y enviamos el ticket a", email})
+			
+				res.status(200).send({mensaje:"ticket creado correctamente",ticket})
 
-			await ticketModel.create({amount:amount,email:email,});
 		} else {
 			res.status(404).send({ resultado: 'Not Found', message: cart });
 		}

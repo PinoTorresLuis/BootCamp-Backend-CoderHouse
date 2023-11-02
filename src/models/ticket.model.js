@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 const ticketSchema = new Schema({
     code:{
         type:String,
-        code: uuidv4(),
+        default: uuidv4(),
         required:true,
     },
     purchaseDateTime:{
@@ -12,14 +12,13 @@ const ticketSchema = new Schema({
         required:true,
         default:Date.now
     },
-  amount:{
+    amount:{
         type:Number,
-        required:true
+        required:true,
     },
     purchaser:{
         type:String,
-        required:true
-    },
+    }
 
 });
 
