@@ -5,10 +5,10 @@ import {passportError, authorization } from "../utils/messageErrors.js";
 const cartRouterDB = Router(); //Almaceno Router en una variable para poder utilizar las rutas
 
 //Ruta que se utiliza para traer todos los cart que existan
-cartRouterDB.get('/', findCarts);
+cartRouterDB.get('/',passportError('jwt'), authorization('user'), findCarts);
 
 //Ruta que se utiliza para traer un carrito en especifico
-cartRouterDB.get('/:cid',findCart);
+cartRouterDB.get('/:cid',passportError('jwt'), authorization('user'),findCart);
 
 //Ruta que se utiliza para crear un carrito
 cartRouterDB.post('/',passportError('jwt'), authorization('user'), createCart);
