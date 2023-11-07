@@ -2,13 +2,14 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session'; //Módulo para manejar las sesion previamente definido
+import errorsHandle from './errors/errorsHandle.js';
 import passport from 'passport'; //Módulo para manejar los inicios de sesión con otras plataformas.Ej:Google.
 import MongoStore from 'connect-mongo'; //Módulo MongoStore para conectar la sesión con MONGODB
 import path from 'path'; //Se utiliza para definir las rutas
 import {__dirname} from './path.js'; //Se utiliza para definir la carpeta dentro de una ruta
 import { engine } from 'express-handlebars' //Módulo para utilizar Handlebars
 import { Server } from 'socket.io'; //Módulo para utilizar WebSocket
-
+import { faker } from '@faker-js/faker';
 //FUNCIONES IMPORTADAS
 import { productModel } from './models/products.models.js'; //ProductsModel para crear Productos
 import { initializePassport } from './config/passport.js'; //Import función InitializePassport 
@@ -32,6 +33,7 @@ const server = app.listen(PORT,()=>{
 const io = new Server(server);  //Inicio el server WebSocket
 
 //Middlewares
+app.use(errorsHandle)
 app.use(express.json()); //Se utiliza para que mis rutas puedan leer archivos json
 app.use(express.urlencoded({extended:true})); //Se utiliza para optimizar la búsqueda en las rutas
 app.engine('handlebars', engine())//Defino que voy a trabajar con handlebars
@@ -87,5 +89,31 @@ io.on("connection", (socket)=>{
 	});
 })
 
+
+//Código de FakerJs
+const modelUser = ()=>{
+  return {
+    _id:faker.database.mongodbObjectId(),
+    email:faker.internet.email(),
+    password:faker.internet.password(),
+    avatar:faker.image.avatar(),
+    first_name:faker.person.firstName(),
+    last_name:faker.person.lastName(),
+    gender:faker.person.gender(),
+    birthdate:faker.date.birthdate(),
+    phone:faker.phone.number(),
+    country:faker.location.country()
+  }
+}
+
+const createRandomUser= (cantUser)=>{
+  let user = []
+  for (let i = 0 ; i< cantUser; i++){
+      user.push(modelUser);
+  }
+  return user
+}
+
+console.log(createRandomUser(4));
 
 
