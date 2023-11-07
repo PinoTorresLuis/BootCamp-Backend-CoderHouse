@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { modelUser } from "../faker.js";
 import {passportError, authorization } from "../utils/messageErrors.js";
+import { generateMockProducts } from "../controllers/mockProducts.controller.js";
 
 const mockingRouter = Router();
 
-mockingRouter.get('/', passportError('jwt'), authorization('user'), modelUser);
+mockingRouter.get('/', passportError('jwt'), authorization('admin'),generateMockProducts);
 
 export default mockingRouter;

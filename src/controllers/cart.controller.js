@@ -174,7 +174,7 @@ export const purchaseCart = async(req,res)=>{
 		let amount = 0;
 		if (cart) {
 			const user = await userModel.find({ cart: cart._id });
-	
+			
 			const purchaseItems = [];
 			cart.products.forEach(async item => {
 				const product = products.find(prod => prod._id == item.id_prod.toString());
