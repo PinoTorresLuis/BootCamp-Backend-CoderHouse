@@ -4,6 +4,6 @@ import { generateMockProducts } from "../controllers/mockProducts.controller.js"
 
 const mockingRouter = Router();
 
-mockingRouter.get('/', passportError('jwt'), authorization('admin'),generateMockProducts);
+mockingRouter.get('/', passportError('jwt'), authorization('user'),generateMockProducts);
 
 export default mockingRouter;
