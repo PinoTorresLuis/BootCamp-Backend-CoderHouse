@@ -9,7 +9,6 @@ import path from 'path'; //Se utiliza para definir las rutas
 import {__dirname} from './path.js'; //Se utiliza para definir la carpeta dentro de una ruta
 import { engine } from 'express-handlebars' //Módulo para utilizar Handlebars
 import { Server } from 'socket.io'; //Módulo para utilizar WebSocket
-import { faker } from '@faker-js/faker';
 //FUNCIONES IMPORTADAS
 import { productModel } from './models/products.models.js'; //ProductsModel para crear Productos
 import { initializePassport } from './config/passport.js'; //Import función InitializePassport 
@@ -88,32 +87,5 @@ io.on("connection", (socket)=>{
 		socket.emit('products', data);
 	});
 })
-
-
-//Código de FakerJs
-const modelUser = ()=>{
-  return {
-    _id:faker.database.mongodbObjectId(),
-    email:faker.internet.email(),
-    password:faker.internet.password(),
-    avatar:faker.image.avatar(),
-    first_name:faker.person.firstName(),
-    last_name:faker.person.lastName(),
-    gender:faker.person.gender(),
-    birthdate:faker.date.birthdate(),
-    phone:faker.phone.number(),
-    country:faker.location.country()
-  }
-}
-
-const createRandomUser= (cantUser)=>{
-  let user = []
-  for (let i = 0 ; i< cantUser; i++){
-      user.push(modelUser);
-  }
-  return user
-}
-
-console.log(createRandomUser(4));
 
 
