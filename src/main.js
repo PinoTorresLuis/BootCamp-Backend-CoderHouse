@@ -9,6 +9,7 @@ import path from 'path'; //Se utiliza para definir las rutas
 import {__dirname} from './path.js'; //Se utiliza para definir la carpeta dentro de una ruta
 import { engine } from 'express-handlebars' //Módulo para utilizar Handlebars
 import { Server } from 'socket.io'; //Módulo para utilizar WebSocket
+
 //FUNCIONES IMPORTADAS
 import { productModel } from './models/products.models.js'; //ProductsModel para crear Productos
 import { initializePassport } from './config/passport.js'; //Import función InitializePassport 
@@ -87,5 +88,3 @@ io.on("connection", (socket)=>{
 		socket.emit('products', data);
 	});
 })
-
-

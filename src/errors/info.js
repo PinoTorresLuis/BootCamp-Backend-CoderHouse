@@ -3,7 +3,8 @@ export const generateUserErrorInfo = (user) =>{
     List of required properties:
     * first_name : needs to be a String, received ${user.first_name}
     * last_name : needs to be a String, received ${user.lastname}
-    * email : needs to be a String, received ${user.email}`
+    * email : needs to be a String, received ${user.email}
+    * password : debe ser un String, se recibió ${user.password}`
 }
 
 export const generateProductErrorInfo = (product) => {
