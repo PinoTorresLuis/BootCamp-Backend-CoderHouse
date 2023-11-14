@@ -25,6 +25,7 @@ export const createCart = async(req,res)=>{
         const cart = await cartModel.create({});
         res.status(200).send({resultado:"Carrito creado correctamente",cart})
     } catch (error) {
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
         res.status(401).send({resultado:"Error al crear el carrito", error});
     }
 }
@@ -58,6 +59,7 @@ export const addProduct = async(req,res)=>{
             res.status(200).send({resultado:"Producto agregado correctamente", message:cart});
         }       
     } catch (error) {
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
         res.status(400).send({error:"Error al agregar el producto al carrito", error})
     }
 };
@@ -86,6 +88,7 @@ export const updateProducts = async (req, res) => {
 			? res.status(200).send({ resultado: 'OK', message: cart })
 			: res.status(404).send({ resultado: 'Not Found', message: cart }); 
 	} catch (error) {
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
 		res.status(400).send({ error: `Error al agregar productos: ${error}` });
 	}
 };
@@ -118,6 +121,7 @@ export const updateQuantity = async (req, res) => {
 			res.status(404).send({ resultado: 'Cart Not Found', message: cart });
 		}
 	} catch (error) {
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
 		res.status(400).send({ error: `Error al agregar productos: ${error}` });
 	}
 };
@@ -133,6 +137,7 @@ export const deleteCart = async (req, res) => {
 		 res.status(404).send({ resultado: 'Not Found', message: cart })
 		};
 	} catch (error) {
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
 		res.status(400).send({ error: `Error al vaciar el carrito: ${error}` });
 	}
 };
@@ -159,6 +164,7 @@ export const deleteProductCart = async (req, res) => {
 			res.status(404).send({ resultado: 'Cart Not Found', message: cart });
 		}
 	} catch (error) {
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
 		res.status(400).send({ error: `Error al eliminar producto: ${error}` });
 	}
 };
@@ -202,6 +208,7 @@ export const purchaseCart = async(req,res)=>{
 			res.status(404).send({ resultado: 'Not Found', message: cart });
 		}
 	} catch (error) {
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
 		res.status(400).send({ error: `Error al consultar carrito: ${error}` });
 	}
 }

@@ -1,0 +1,16 @@
+{"level":"warning","message":"Estamos entrando en la prueba de error"}
+{"level":"error","message":"[ERROR][14/11/2023, 19:22:51 - 19:22:51] -Ocurrió un error: Test Error"}
+{"level":"warning","message":"[WARNING][14/11/2023 - 19:27:41] Alerta: Cuidado, alguna te mandaste"}
+{"level":"error","message":"[ERROR][14/11/2023 - 19:27:41] Ha ocurrido un error: Cuidado, alguna te mandaste"}
+{"level":"warning","message":"Estamos entrando en la prueba de error"}
+{"level":"error","message":"[ERROR][14/11/2023, 19:31:19 - 19:31:19] -Ocurrió un error: Test Error"}
+{"level":"warning","message":"[WARNING][14/11/2023 - 19:40:31] Warning: Esto es un mensaje de prueba"}
+{"level":"error","message":"[ERROR][14/11/2023 - 19:40:31] Error: Esto es un mensaje de prueba"}
+{"level":"warning","message":"[WARNING][14/11/2023 - 19:46:59] Warning: Esto es un mensaje de prueba"}
+{"level":"warning","message":"[WARNING][14/11/2023 - 19:47:49] Warning: Esto es un mensaje de prueba"}
+{"level":"warning","message":"[WARNING][14/11/2023 - 19:56:50] Warning: Esto es un mensaje de prueba"}
+{"level":"warning","message":"[WARNING][14/11/2023 - 20:04:38] Warning: Esto es un mensaje de prueba"}
+{"level":"warning","message":"[WARNING][14/11/2023 - 20:11:20] Warning: Esto es un mensaje de prueba"}
+{"level":"warning","message":"[WARNING][14/11/2023 - 20:18:06] Warning: Esto es un mensaje de prueba"}
+{"level":"error","message":"[ERROR][14/11/2023 - 20:18:06] Error: Esto es un mensaje de prueba"}
+{"level":"fatal","message":"[ERROR FATAL][14/11/2023 - 20:18:06] Fatal: Esto es un mensaje de prueba"}

@@ -18,7 +18,7 @@ router.use('/api/carts',cartRouterDB);
 router.use('/api/session', sessionRouter);
 router.use('/api/mockingproducts', mockingRouter);
 router.use('/api/mail', mailerRouter);
-router.use('/api/main', loggerRouter);
+router.use('/api/logger', loggerRouter);
 router.use('/static',routerHandleBars);
 
 export default router;
