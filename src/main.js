@@ -12,7 +12,9 @@ import { Server } from 'socket.io'; //Módulo para utilizar WebSocket
 
 //FUNCIONES IMPORTADAS
 import { productModel } from './models/products.models.js'; //ProductsModel para crear Productos
-import { initializePassport } from './config/passport.js'; //Import función InitializePassport 
+import { initializePassport } from './config/passport.js'; //Import función InitializePassport
+//Logger para el manejo de errores
+import { logger } from './utils/logger.js'; 
 import mongoConnect from './database.js'; //Import Función que realiza la conexión con el Servidor MONGODB 
 import router from './routes/index.routes.js'; //Funciones de las rutas de las páginas
 
@@ -27,7 +29,7 @@ mongoConnect();
 
 //Server
 const server = app.listen(PORT,()=>{
-    console.log("SERVIDOR FUNCIONANDO EN PUERTO:", PORT);
+    logger.info("SERVIDOR FUNCIONANDO EN PUERTO:", PORT);
 })
 //Se ubica acá arriba apropósito porque Socket io necesita saber la configuración de los servidores
 const io = new Server(server);  //Inicio el server WebSocket
@@ -72,7 +74,7 @@ app.get('/*',(req,res)=>{   //Ruta con error 404 que se utiliza a nivel general
 
 //Conexión de Socket.io
 io.on("connection", (socket)=>{
-    console.log("Conexión con Socket.io OK");
+    logger.info("Conexión con Socket.io OK");
     
     //Método para agregar los mensajes a la base de datos
     socket.on("message", async data=>{
