@@ -1,6 +1,20 @@
 import 'dotenv/config'
+import nodemailer from 'nodemailer';
 import { nodeMailer } from '../models/mailer.model.js';
+import { logger } from '../utils/logger.js';
 
+//esto iria en config
+const transporter = nodemailer.createTransport({
+        host:'smtp.gmail.com',
+        port:465,
+        secure:true,
+        auth:{
+            user:'lpino7340@gmail.com',
+            pass: process.env.PASSWORD_EMAIL,
+            authMethod:'LOGIN'
+        }
+ 
+})
 
 export const sendMail = async(req,res)=>{
     try {
@@ -21,4 +35,22 @@ export const sendMail = async(req,res)=>{
         
     }
   
+}
+
+export const sendRecoveryEmail = (email,recoveryLink)=>{
+    const emailOptions = {
+        from:' luispinito.torres@gmail.com',
+        to:email,
+        subject: 'Link de recuperación de su contraseña',
+        text: `Por favor haz click en el siguiente enlace ${recoveryLink}`
+    }
+
+    transporter.sendMail(emailOptions,(error,info)=>{
+        if(error){
+            logger.error(error);
+        }
+        else{
+            logger.error('Email enviado correctamente')
+        }
+    })
 }
