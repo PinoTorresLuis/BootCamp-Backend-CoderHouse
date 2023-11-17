@@ -14,7 +14,7 @@ import { Server } from 'socket.io'; //Módulo para utilizar WebSocket
 import { productModel } from './models/products.models.js'; //ProductsModel para crear Productos
 import { initializePassport } from './config/passport.js'; //Import función InitializePassport
 //Logger para el manejo de errores
-import { logger } from './utils/logger.js'; 
+import { logger, requestLogger } from './utils/logger.js'; 
 import mongoConnect from './database.js'; //Import Función que realiza la conexión con el Servidor MONGODB 
 import router from './routes/index.routes.js'; //Funciones de las rutas de las páginas
 
@@ -36,6 +36,7 @@ const io = new Server(server);  //Inicio el server WebSocket
 
 //Middlewares
 app.use(errorsHandle)
+app.use(requestLogger);
 app.use(express.json()); //Se utiliza para que mis rutas puedan leer archivos json
 app.use(express.urlencoded({extended:true})); //Se utiliza para optimizar la búsqueda en las rutas
 app.engine('handlebars', engine())//Defino que voy a trabajar con handlebars
