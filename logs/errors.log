@@ -14,3 +14,5 @@
 {"level":"warning","message":"[WARNING][14/11/2023 - 20:18:06] Warning: Esto es un mensaje de prueba"}
 {"level":"error","message":"[ERROR][14/11/2023 - 20:18:06] Error: Esto es un mensaje de prueba"}
 {"level":"fatal","message":"[ERROR FATAL][14/11/2023 - 20:18:06] Fatal: Esto es un mensaje de prueba"}
+{"level":"error","message":"Email enviado correctamente"}
+{"level":"error","message":"Email enviado correctamente"}
