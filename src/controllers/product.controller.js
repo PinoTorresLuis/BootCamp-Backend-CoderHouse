@@ -1,4 +1,5 @@
 import { productModel } from "../models/products.models.js";
+import { logger } from "../utils/logger.js";
 
 //Generamos funciones en un formato más general.Combinamos Cada fn son el método involucrado + el modelo.
 export const getProducts = async(req,res)=>{
@@ -13,6 +14,7 @@ export const getProducts = async(req,res)=>{
         }
         res.status(404).send({mensaje: "Productos no encontrados"})
     } catch (error) {
+        logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
         res.status(500).send({error:"Error al consultar productos:", error})
     }
 }
@@ -27,6 +29,7 @@ export const getProduct = async(req,res)=>{
         }
         res.status(404).send({error: "Productos no encontrado"})
     } catch (error) {
+        logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
         res.status(500).send({error:"Error en consultar producto:", error})
     }
 }
@@ -59,6 +62,7 @@ export const putProducts = async(req,res)=>{
         }
         res.status(404).send({error: "Productos no encontrado"})
     } catch (error) {
+        logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
          res.send(500).send({error:'Error en actualizar el producto',error}) //Error 500 es un error general
     }
 }
@@ -72,6 +76,7 @@ export const deleteProduct = async(req,res)=>{
         }
         res.status(404).send({error: "Productos no encontrado"})
     } catch (error) {
+        logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
         res.send(500).send({error:'Error en actualizar el producto',error}) //Error 500 es un error general
     }
 }

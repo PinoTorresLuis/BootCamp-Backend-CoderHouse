@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { productModel } from '../models/products.models.js';
+import { logger } from '../utils/logger.js';
 
 export const generateMockProducts = async (req, res) => {
     try {
@@ -16,10 +17,11 @@ export const generateMockProducts = async (req, res) => {
             };
             
             const newProduct = await productModel.create(productData);
-            console.log(newProduct)
+            logger.info(newProduct)
         }   
         res.status(200).send({ message: 'Productos de prueba creados exitosamente'});
     } catch (error) {
+        logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
         res.status(500).send({ error:error.message });
     }
 };

@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { cartModel } from "./cart.models.js";
 
 //Definición de mi esquema de datos
 const userSchema = new Schema({
@@ -22,6 +23,7 @@ const userSchema = new Schema({
     },
     rol:{
         type:String,
+        enum:['user','premium'],
         default:'user'
     },
     age:{
@@ -39,6 +41,7 @@ userSchema.pre('save', async function (next) {
         const newCart = await cartModel.create({})
         this.cart = newCart._id
     } catch (error) {
+    
         next(error)
     }
 

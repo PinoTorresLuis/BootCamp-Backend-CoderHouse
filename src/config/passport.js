@@ -5,6 +5,7 @@ import GithubStrategy from 'passport-github2'; //Estrategia de GitHub
 import jwt from 'passport-jwt';
 import { createHash, validatePassword } from '../utils/bcrypt.js' ; //Los voy a implementar dentro de la estrategia
 import { userModel } from '../models/users.model.js';
+import { logger } from '../utils/logger.js';
 
 //Defino la estrategia a utilizar. Es la configuración de mi estrategia
 const localStrategy = local.Strategy;
@@ -14,11 +15,11 @@ const ExtractJWT = jwt.ExtractJwt //Extractor de los headers de la consulta
 //Función de mi estrategia
 export const initializePassport =()=>{
     const cookieExtractor = req =>{
-        console.log(req.cookies)//Si me devuelve un {} no hay cookies en mi app. Es algo totalmente distinto a que no exista mi cookie
+        logger.info(req.cookies)//Si me devuelve un {} no hay cookies en mi app. Es algo totalmente distinto a que no exista mi cookie
         //Si existen cookies, consulte por mi cookie y sino asigno null.
         //Acá lo que hacemos es consultar si existe la cookie, si es así la devuelve sino devuelve un objeto vacio.
         const token = req.cookies ? req.cookies.jwtCookie: {} //Consulto el Token llamado jwtCookie
-        console.log(token); 
+        logger.info(token); 
         //Esto es para extraer la cookie especifica del navegador e implementarla
         return token
     }
@@ -29,9 +30,12 @@ export const initializePassport =()=>{
         secretOrKey: process.env.JWT_SECRET 
     }, async(jwt_payload,done)=>{ //Payload es la forma en la que puedo implementar los datos. Tiene que ver con el resultado de mi consulta
         try {
-            console.log(jwt_payload);
+            logger.info(jwt_payload);
             return done(null, jwt_payload)//Retorno el contenido del Token Cokiee 
         } catch (error) {
+            logger.error(
+                `[ERROR][${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] Error:`, error
+            );
             return done(error);
         }
     }))
@@ -58,7 +62,7 @@ export const initializePassport =()=>{
                 password:hashPassword,
                 age:age
             })
-            console.log(userCreated);
+           logger.info(userCreated);
             return done(null, userCreated);
         } catch (error) { //Acá el error sería por un error de conexión o un error de la base de datos
             return done(error);
@@ -108,8 +112,8 @@ export const initializePassport =()=>{
         callbackURL: process.env.CALLBACK_URL
     }, async(accessToken,refreshToken, profile,done)=>{
         try {
-            console.log("Este es tu accesToken:", accessToken);
-            console.log("Este es tu refreshToken:",refreshToken);
+           logger.info("Este es tu accesToken:", accessToken);
+           logger.info("Este es tu refreshToken:",refreshToken);
         //esto es para encontrar el usuario:
         const user = await userModel.findOne({email:profile._json.email})//como el email es un atributo único es la única forma de garantizarme si ya existe o no 
         if(!user){ //Si no existe el usuario, lo creo

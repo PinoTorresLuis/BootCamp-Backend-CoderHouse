@@ -1,16 +1,5 @@
 import { generateToken } from "../utils/jwt.js";
-
-//Ruta para registrarse
-export const userRegister = async(req,res)=>{
-    try {
-        if(!req.user){
-            res.status(400).send({mensaje:"Usuario ya creado"});
-        }
-        return res.status(200).send({mensaje:"Usuario creado correctamente"});
-    } catch (error) {
-        res.status(500).send({error:"Error al crear usuario", error});
-    }
-}
+import { logger } from "../utils/logger.js";
 
 //Ruta para loguearse a mi app
 export const sessionLogin = async(req,res)=>{
@@ -23,13 +12,14 @@ export const sessionLogin = async(req,res)=>{
             lastname: req.user.lastname,
             age:req.user.age,
             email:req.user.email
-        }
+        } 
         const token = generateToken(req.user)
         res.cookie('jwtCookie',token,{
             maxAge: 43200000
         })
         res.status(200).send({payload:req.user})
     } catch (error) {
+        logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
         res.status(500).send({error:"Error al iniciar sesión", error})
     }
 }
@@ -48,7 +38,7 @@ export const loginGitHub = async(req,res)=>{
 //Prueba de inicio de sesión para el manejo de JWT
 export const testSessionJWT = async(req,res)=>{
     res.status(200).send({mensaje:req.user});
-    console.log(req.user.user);
+    logger.info(req.user.user);
     req.session.user = {
         first_name: req.user.user.first_name,
         lastname : req.user.user.lastname,

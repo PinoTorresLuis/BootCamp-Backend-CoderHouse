@@ -2,6 +2,7 @@ import { cartModel } from "../models/cart.models.js";
 import { productModel } from "../models/products.models.js";
 import { ticketModel } from "../models/ticket.model.js";
 import { userModel } from "../models/users.model.js";
+import { logger } from "../utils/logger.js";
 
 //Ruta que se utiliza para traer todos los cart que existan
 export const findCarts =  async(req,res)=>{
@@ -25,7 +26,7 @@ export const createCart = async(req,res)=>{
         const cart = await cartModel.create({});
         res.status(200).send({resultado:"Carrito creado correctamente",cart})
     } catch (error) {
-		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`);
         res.status(401).send({resultado:"Error al crear el carrito", error});
     }
 }
@@ -43,7 +44,7 @@ export const addProduct = async(req,res)=>{
         }
 
 		if(product.stock === 0){
-			console.log(product.stock);
+			logger.info(product.stock);
 			res.status(400).send({error:"No hay stock"})
 		}
 
@@ -68,7 +69,7 @@ export const addProduct = async(req,res)=>{
 export const updateProducts = async (req, res) => {
 	const { cid } = req.params;
 	const updateProducts = req.body; 
-	console.log("Update", updateProducts);
+	logger.info("Update", updateProducts);
 	try {
 		const cart = await cartModel.findById(cid);
 		if(!cart){

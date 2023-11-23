@@ -1,9 +1,11 @@
+import { logger } from "./utils/logger.js";
+
 export default function auth (req,res,next){
     const {email, password} = req.body
-    console.log(email,password);
+    logger.info(email,password);
 
     if(email === "admin@admin.com" && password== "1234"){
-        console.log("felicitaciones ingresaste correctamente", email)
+        logger.info("felicitaciones ingresaste correctamente", email)
         return res.redirect("/static/admin");
        
     }
