@@ -20,7 +20,7 @@ const router = Router();
 router.use('/api/products', productRouter);
 router.use('/api/carts',cartRouterDB);
 router.use('/api/session', sessionRouter);
-router.use('api/users', userRouter);
+router.use('/api/users', userRouter);
 router.use('/api/mockingproducts', mockingRouter);
 router.use('/api/nodemailer', nodeMailer);
 router.use('/api/logger', loggerRouter);
