@@ -19,16 +19,33 @@ export const userRegister = async(req,res)=>{
     }
 }
 
-//Función para traer a los usuarios 
+//Función para traer a un usuario por su id
 export const getUser = async(req,res)=>{
+    const {id} = req.params
     try {
-        const users = await userModel.find()
-        res.status(200).send(users)
+        const user = await userModel.findById(id)
+        if (user){
+        res.status(200).send(user)
+        }else {
+            res.status(404).send({Error:'Usuario no encontrado'})
+        }
     } catch (error) {
         logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
         res.status(400).send({error:"Error al consultar por el usuario",error});
     }
 }
+
+ export const getUsers = async(req,res)=>{
+    try {
+        const users = await userModel.find()
+        res.status(200).send(users)     
+    } catch (error) {
+        logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
+        res.status(400).send({error:"Error al consultar por el usuario",error});
+    }
+   
+};
+
 
 /* 
 export const newRol = async(req,res)=>{

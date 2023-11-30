@@ -1,0 +1,79 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtener todos los productos
+      tags:
+        - Products
+      responses:
+        '200':
+          description: Productos obtenidos satisfactoriamente
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Products'
+        '500':
+          description: Error interno del servidor al obtener los productos
+  /api/products/{id}:
+      get:
+        summary: Obtener un sólo producto
+        tags:
+          - Product
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema: 
+              $type: String
+            description: Id del producto a buscar
+        responses:
+          '200':
+            description: Usuario obtenido satisfactoriamente
+            content: 
+              application/json:
+                schema:
+                 items:
+                    $ref: '#/components/schemas/Products'
+          '500':
+            description: Error interno del servidor al obtener los usuarios
+
+components:
+  schemas:
+    Product:
+      type: Objet
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de MongoDB
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        stock:
+          type: Number
+          description: stock del producto
+        category: 
+          type: String
+          description: Categoría del producto
+        status:
+          type: Boolean
+          description: Estado del producto
+        code: 
+          type: String
+          description: Código del producto
+      example:
+        _id: ObjetId('31a31a31a31a31')
+        title: Plato
+        description: Porcelana
+        price: 500
+        stock: 500
+        category: "Cocina"
+        status: true
+        code: "A1"
+          
