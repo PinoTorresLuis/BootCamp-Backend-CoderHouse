@@ -43,7 +43,7 @@ components:
       type: object
       properties:
         _id:
-          type: string
+          type: ObjectId
           description: Id autogenerado de MongoDB
         products:
           type: array
@@ -51,7 +51,7 @@ components:
             type: object
             properties:
               id_prod:
-                type: string
+                type: ObjectId
                 description: Id del producto
               quantity:
                 type: number

@@ -27,8 +27,8 @@ export const findCart = async(req,res)=>{
 			res.status(404).send({resultado:"No se encontró ningún carrito"})
 		}
 	} catch (error) {
-		res.status(400).send({ error: `Error al consultar carrito: ${error}` });
-	}
+		logger.error(`[ERROR] - Date: ${new Date().toLocaleString()} Ha ocurrido un error: ${error.message}`)
+        res.status(400).send({error:"Error al consultar productos:", error})	}
    
 }
 //Ruta que se utiliza para crear un carrito
