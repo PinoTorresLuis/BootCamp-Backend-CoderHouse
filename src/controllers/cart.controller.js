@@ -6,19 +6,30 @@ import { logger } from "../utils/logger.js";
 
 //Ruta que se utiliza para traer todos los cart que existan
 export const findCarts =  async(req,res)=>{
-    const prods = await cartModel.find();
-    res.status(200).send({resultado:"Carritos encontrados", message:prods});
+	//traer los carritos
+	const { limit } = req.query;
+	try {
+		const carts = await cartModel.find().limit(limit);
+		res.status(200).send({ resultado: 'OK', message: carts });
+	} catch (error) {
+		res.status(400).send({ error: `Error al consultar carritos: ${error}` });
+	}
 }
 
 //Ruta que se utiliza para traer un carrito en especifico
 export const findCart = async(req,res)=>{
     const {cid} = req.params;
-    const prods = await cartModel.findById(cid)//.populate('products.id_prod');
-    if (prods){
-        res.status(200).send({resultado:"Tu carrito es:", message:prods})
-    }else {
-        res.status(404).send({resultado:"No se encontró ningún carrito"})
-    }
+	try {
+		const prods = await cartModel.findById(cid)//.populate('products.id_prod');
+		if (prods){
+			res.status(200).send({resultado:"Tu carrito es:", message:prods})
+		}else {
+			res.status(404).send({resultado:"No se encontró ningún carrito"})
+		}
+	} catch (error) {
+		res.status(400).send({ error: `Error al consultar carrito: ${error}` });
+	}
+   
 }
 //Ruta que se utiliza para crear un carrito
 export const createCart = async(req,res)=>{

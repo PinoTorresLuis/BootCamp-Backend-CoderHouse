@@ -1,0 +1,65 @@
+paths:
+  /api/carts/:
+    get:
+      summary: Obtener todos los carritos
+      tags:
+        - Carrito
+      responses:
+        '200':
+          description: Carritos obtenidos satisfactoriamente
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del servidor al obtener los carritos
+  /api/cart/{id}:
+    get:
+      summary: Obtener un solo carrito
+      tags:
+        - Cart
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id del Carrito a buscar
+      responses:
+        '200':
+          description: Carrito obtenido satisfactoriamente
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del servidor al obtener los carritos
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado de MongoDB
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              id_prod:
+                type: string
+                description: Id del producto
+              quantity:
+                type: number
+                description: Cantidad del producto
+      example:
+        _id: "31a31a31a31a31"
+        products:
+          - id_prod: "product_id_1"
+            quantity: 5
+          - id_prod: "product_id_2"
+            quantity: 3

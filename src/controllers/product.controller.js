@@ -20,7 +20,7 @@ export const getProducts = async(req,res)=>{
 }
 
 export const getProduct = async(req,res)=>{
-    const {id} = req.query
+    const {id} = req.params
    
     try {
         const idProduct = await productModel.findById(id);
