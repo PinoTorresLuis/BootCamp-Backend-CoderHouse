@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "nodemon src/main.js",
     "faker": "nodemon src/faker.js",
-    "test": "mocha test/Users.test.js",
-    "testChai": "mocha test/UsersChai.test.js",
-    "testSuper": "mocha test/Supertest.test.js"
+    "test": "mocha src/testing/Users.test.js",
+    "chaiTest": "mocha src/testing/UsersChai.test.js",
+    "superTest": "mocha src/testing/Supertest.test.js"
   },
   "keywords": [],
   "author": "",

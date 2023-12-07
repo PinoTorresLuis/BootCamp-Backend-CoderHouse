@@ -1,9 +1,9 @@
 import 'dotenv/config.js'; //Permite utilizar variables de entorno
 import Assert from 'assert'
 import mongoose from 'mongoose';
-import { logger } from './utils/logger.js';
-import { userModel } from "../models/users.model.js";
-import { getUsers } from '../controllers/user.controller.js';
+import { logger } from '../src/utils/logger.js';
+import { userModel } from '../src/models/users.model.js';
+import { getUsers } from '../src/controllers/user.controller.js';
 
 await mongoose.connect(process.env.MONGO_URL)
 .then(async()=>{
