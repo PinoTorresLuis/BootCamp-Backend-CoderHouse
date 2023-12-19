@@ -11,6 +11,7 @@ import sessionRouter from "./sessions.routes.js";
 import mockingRouter from './mockingproducts.routes.js';
 //Ruta de NodeMailer
 import nodeMailer from './nodemailer.routes.js';
+//Ruta de Logger
 import loggerRouter from './logger.routes.js';
 //Ruta de Registro
 import userRouter from './users.routes.js';

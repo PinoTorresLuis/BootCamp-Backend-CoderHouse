@@ -3,6 +3,9 @@ import chai from chai;
 import supertest from "supertest";
 import mongoose from "mongoose";
 
+//Mocha = Estructura
+//Chai = Herramientas
+//Supertest = Simplificación de ambas
 const expect = chai.expect;
 const requester = supertest('http://localhost:8000')
 
