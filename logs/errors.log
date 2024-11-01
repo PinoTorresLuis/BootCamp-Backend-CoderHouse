@@ -17,3 +17,21 @@
 {"level":"error","message":"Email enviado correctamente"}
 {"level":"error","message":"Email enviado correctamente"}
 {"level":"error","message":"[ERROR] - Date: 23/11/2023, 10:29:02 Ha ocurrido un error: oldPassword is not defined"}
+{"level":"error","message":"[ERROR] - Date: 26/12/2023, 17:10:41 Ha ocurrido un error: updateProducts.forEach is not a function"}
+{"level":"error","message":"[ERROR] - Date: 26/12/2023, 17:11:33 Ha ocurrido un error: updateProducts.forEach is not a function"}
+{"level":"error","message":"[ERROR] - Date: 26/12/2023, 17:15:43 Ha ocurrido un error: updateProducts.forEach is not a function"}
+{"level":"error","message":"[ERROR] - Date: 26/12/2023, 17:18:12 Ha ocurrido un error: updateProducts.forEach is not a function"}
+{"level":"error","message":"[ERROR] - Date: 26/12/2023, 17:19:39 Ha ocurrido un error: updateProducts.forEach is not a function"}
+{"level":"error","message":"[ERROR] - Date: 26/12/2023, 17:20:43 Ha ocurrido un error: updateProducts.forEach is not a function"}
+{"level":"error","message":"[ERROR] - Date: 26/12/2023, 17:20:47 Ha ocurrido un error: updateProducts.forEach is not a function"}
+{"level":"error","message":"[ERROR] - Date: 27/12/2023, 12:24:25 Ha ocurrido un error: Cannot read properties of undefined (reading 'user')"}
+{"level":"error","message":"[ERROR] - Date: 27/12/2023, 12:33:57 Ha ocurrido un error: firstname is not defined"}
+{"level":"error","message":"[ERROR] - Date: 27/12/2023, 12:34:16 Ha ocurrido un error: firstname is not defined"}
+{"level":"error","message":"[ERROR] - Date: 27/12/2023, 16:21:59 Ha ocurrido un error: Cannot read properties of undefined (reading 'first_name')"}
+{"level":"error","message":"[ERROR] - Date: 27/12/2023, 16:30:38 Ha ocurrido un error: Cannot read properties of undefined (reading 'first_name')"}
+{"level":"error","message":"[ERROR] - Date: 29/12/2023, 15:07:14 Ha ocurrido un error: Cannot read properties of undefined (reading 'status')"}
+{"level":"error","message":"[ERROR] - Date: 29/12/2023, 15:40:28 Ha ocurrido un error: logger.warn is not a function"}
+{"level":"error","message":"[ERROR] - Date: 29/12/2023, 15:41:27 Ha ocurrido un error: logger.warn is not a function"}
+{"level":"error","message":"No se encontraron usuarios inactivos"}
+{"level":"error","message":"No se encontraron usuarios inactivos"}
+{"level":"error","message":"No se encontraron usuarios inactivos"}
